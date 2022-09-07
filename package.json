@@ -10,6 +10,7 @@
     "/dist"
   ],
   "repository": "dgudim/Discord_bots-common",
+  "bugs": "https://github.com/dgudim/Discord_bots-common",
   "scripts": {
     "build": "tsc"
   },
