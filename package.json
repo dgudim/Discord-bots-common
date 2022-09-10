@@ -7,7 +7,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "/dist"
+    "/dist",
+    "/src"
   ],
   "repository": "dgudim/Discord_bots-common",
   "bugs": "https://github.com/dgudim/Discord_bots-common",
