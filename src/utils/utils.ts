@@ -22,6 +22,10 @@ export function normalize(str: string | undefined | null): string {
     return str ? str.toLowerCase().trim() : "";
 }
 
+export function getBaseLog(x: number, y: number): number {
+    return Math.log(y) / Math.log(x);
+}
+
 export function trimStringArray(arr: string[]): string[] {
     return arr.map(element => {
         return normalize(element);
