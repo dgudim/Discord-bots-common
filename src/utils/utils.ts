@@ -64,7 +64,7 @@ export function limitLength(str: string, max_length: number): string {
  * @param   Number  v       The value
  * @return  Array           The RGB representation
  */
-export function hsvToRgb(h: number, s: number, v: number) {
+export function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number] {
     let r = 0, g = 0, b = 0;
 
     const i = Math.floor(h * 6);

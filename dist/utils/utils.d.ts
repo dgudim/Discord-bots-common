@@ -21,7 +21,7 @@ export declare function limitLength(str: string, max_length: number): string;
  * @param   Number  v       The value
  * @return  Array           The RGB representation
  */
-export declare function hsvToRgb(h: number, s: number, v: number): number[];
+export declare function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number];
 export declare function perc2color(perc: number): ColorResolvable;
 export declare function getChannelName(channel: TextBasedChannel): string;
 export declare function sendToChannel(channel: TextBasedChannel | null, content: string | EmbedBuilder | MessagePayload | MessageOptions, log_asError?: boolean): Promise<void>;
