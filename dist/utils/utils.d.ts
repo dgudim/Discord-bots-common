@@ -10,6 +10,7 @@ export declare function isUrl(url: string): Promise<boolean>;
 export declare function getFileHash(file: string): Promise<string>;
 export declare function getValueIfExists(db: JsonDB, search_path: string, get_path?: string): Promise<any>;
 export declare function limitLength(str: string, max_length: number): string;
+export declare function hsvToRgb(h: number, s: number, v: number): number[];
 export declare function perc2color(perc: number): ColorResolvable;
 export declare function getChannelName(channel: TextBasedChannel): string;
 export declare function sendToChannel(channel: TextBasedChannel | null, content: string | EmbedBuilder | MessagePayload | MessageOptions, log_asError?: boolean): Promise<void>;
