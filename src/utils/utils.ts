@@ -53,6 +53,17 @@ export function limitLength(str: string, max_length: number): string {
     return str;
 }
 
+/**
+ * Converts an HSV color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Assumes h, s, and v are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  v       The value
+ * @return  Array           The RGB representation
+ */
 export function hsvToRgb(h: number, s: number, v: number) {
     let r = 0, g = 0, b = 0;
 

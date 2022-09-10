@@ -10,6 +10,17 @@ export declare function isUrl(url: string): Promise<boolean>;
 export declare function getFileHash(file: string): Promise<string>;
 export declare function getValueIfExists(db: JsonDB, search_path: string, get_path?: string): Promise<any>;
 export declare function limitLength(str: string, max_length: number): string;
+/**
+ * Converts an HSV color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+ * Assumes h, s, and v are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   Number  h       The hue
+ * @param   Number  s       The saturation
+ * @param   Number  v       The value
+ * @return  Array           The RGB representation
+ */
 export declare function hsvToRgb(h: number, s: number, v: number): number[];
 export declare function perc2color(perc: number): ColorResolvable;
 export declare function getChannelName(channel: TextBasedChannel): string;
