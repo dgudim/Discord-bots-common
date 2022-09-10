@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parse = exports.wrap = exports.colors = void 0;
-const colorEscapeStr = '\x1b[';
+const colorEscapeStr = "\x1b[";
 var colors;
 (function (colors) {
     colors["PREVIOUS"] = "\u001B[30m";
@@ -21,21 +21,20 @@ var colors;
     colors["LIGHT_PURPLE"] = "\u001B[95m";
     colors["PURPLE"] = "\u001B[35m";
 })(colors = exports.colors || (exports.colors = {}));
-;
 function wrap(message, color) {
     return `${color}${message}${colors.PREVIOUS}`;
 }
 exports.wrap = wrap;
 function getPreviousColor(str, steps_behind) {
-    let split = str.split(colorEscapeStr);
+    const split = str.split(colorEscapeStr);
     if (split.length > steps_behind) {
-        let lastColor = split[split.length - 1].substring(0, 2);
-        let lastButOneColor = split[split.length - 2].substring(0, 2);
-        let targetColor = split[split.length - steps_behind].substring(0, 2);
-        if (lastColor == '30') {
+        const lastColor = split[split.length - 1].substring(0, 2);
+        const lastButOneColor = split[split.length - 2].substring(0, 2);
+        const targetColor = split[split.length - steps_behind].substring(0, 2);
+        if (lastColor == "30") {
             return getPreviousColor(str.substring(0, str.lastIndexOf(colors.PREVIOUS)), steps_behind + 1);
         }
-        if (lastButOneColor == '30' || targetColor == '30') {
+        if (lastButOneColor == "30" || targetColor == "30") {
             return getPreviousColor(str.substring(0, str.lastIndexOf(colors.PREVIOUS)), steps_behind);
         }
         return `${colorEscapeStr}${targetColor}m`;
@@ -45,7 +44,7 @@ function getPreviousColor(str, steps_behind) {
 function parse(str) {
     let index;
     while ((index = str.lastIndexOf(colors.PREVIOUS)) >= 0) {
-        let left_part = str.substring(0, index);
+        const left_part = str.substring(0, index);
         str = left_part + getPreviousColor(left_part, 2) + str.substring(index + colors.PREVIOUS.length);
     }
     return str;

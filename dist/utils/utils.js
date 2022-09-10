@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.combinedReply = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
+exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.combinedReply = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const hash_wasm_1 = require("hash-wasm");
@@ -12,13 +12,17 @@ function isDirectory(path) {
 }
 exports.isDirectory = isDirectory;
 function getFileName(file) {
-    return file.substring(file.lastIndexOf('/') + 1);
+    return file.substring(file.lastIndexOf("/") + 1);
 }
 exports.getFileName = getFileName;
 function normalize(str) {
-    return str ? str.toLowerCase().trim() : '';
+    return str ? str.toLowerCase().trim() : "";
 }
 exports.normalize = normalize;
+function getBaseLog(x, y) {
+    return Math.log(y) / Math.log(x);
+}
+exports.getBaseLog = getBaseLog;
 function trimStringArray(arr) {
     return arr.map(element => {
         return normalize(element);
@@ -41,13 +45,14 @@ async function getValueIfExists(db, search_path, get_path = search_path) {
 exports.getValueIfExists = getValueIfExists;
 function limitLength(str, max_length) {
     if (str.length > max_length) {
-        str = str.slice(0, max_length - 3) + '...';
+        str = str.slice(0, max_length - 3) + "...";
     }
     return str;
 }
 exports.limitLength = limitLength;
 function perc2color(perc) {
-    let r, g, b = 0;
+    let r, g;
+    const b = 0;
     if (perc < 50) {
         r = 255;
         g = Math.round(5.1 * perc);
@@ -56,13 +61,13 @@ function perc2color(perc) {
         g = 255;
         r = Math.round(510 - 5.10 * perc);
     }
-    let h = r * 0x10000 + g * 0x100 + b * 0x1;
-    return ('#' + ('000000' + h.toString(16)).slice(-6));
+    const h = r * 0x10000 + g * 0x100 + b * 0x1;
+    return ("#" + ("000000" + h.toString(16)).slice(-6));
 }
 exports.perc2color = perc2color;
 function embedToString(embed) {
     let str = embed.data.title + "\n" + embed.data.description;
-    for (let field of embed.data.fields || []) {
+    for (const field of embed.data.fields || []) {
         str += `\n${field.name}: ${field.value}`;
     }
     return str;
@@ -71,7 +76,7 @@ function payloadToString(payload) {
     let str = payload.options.content || "";
     if (payload.options.files) {
         str += "\nfiles:\n";
-        for (let file of payload.options.files) {
+        for (const file of payload.options.files) {
             str += `\n${file}`;
         }
     }
@@ -93,11 +98,11 @@ async function sendToChannel(channel, content, log_asError) {
             (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: ${payloadToString(content)}`);
             await channel.send(content);
         }
-        else if (typeof content === 'string') {
+        else if (typeof content === "string") {
             const len = content.length;
             let pos = 0;
             while (pos < len) {
-                let slice = content.slice(pos, pos + 1999);
+                const slice = content.slice(pos, pos + 1999);
                 (0, logger_1.log)(`channel ${(0, colors_1.wrap)(channel, colors_1.colors.CYAN)}: ${content}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
                 await channel.send(slice);
                 pos += 1999;
@@ -151,10 +156,10 @@ async function combinedReply(interaction, message, content) {
 exports.combinedReply = combinedReply;
 function walk(dir) {
     let results = [];
-    let list = fs.readdirSync(dir);
+    const list = fs.readdirSync(dir);
     list.forEach(function (file) {
-        file = dir + '/' + file;
-        let stat = fs.statSync(file);
+        file = dir + "/" + file;
+        const stat = fs.statSync(file);
         if (stat && stat.isDirectory()) {
             results = results.concat(walk(file));
         }
@@ -170,16 +175,16 @@ exports.walk = walk;
 function getSimpleEmbed(title, description, color) {
     const embed = new discord_js_1.EmbedBuilder();
     embed.setTitle(title);
-    embed.setDescription(description || '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+    embed.setDescription(description || "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     embed.setColor(color);
     return embed;
 }
 exports.getSimpleEmbed = getSimpleEmbed;
 function getDateTime() {
     const now = new Date();
-    const date = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+    const date = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
     const time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-    return date + ' ' + time;
+    return date + " " + time;
 }
 exports.getDateTime = getDateTime;
 function clamp(num, min, max) {
@@ -191,7 +196,7 @@ function sleep(ms) {
 }
 exports.sleep = sleep;
 function normalizeTags(tags) {
-    return tags.replaceAll(' ', ',').replaceAll('_', ' ').replaceAll(':', '_').replaceAll('\'', '');
+    return tags.replaceAll(" ", ",").replaceAll("_", " ").replaceAll(":", "_").replaceAll("'", "");
 }
 exports.normalizeTags = normalizeTags;
 function stripUrlScheme(url) {
@@ -201,21 +206,21 @@ exports.stripUrlScheme = stripUrlScheme;
 async function fetchUrl(url) {
     const res = await fetch(url);
     if (!res.ok) {
-        return { ok: res.ok, type: '', status: res.status, statusText: res.statusText };
+        return { ok: res.ok, type: "", status: res.status, statusText: res.statusText };
     }
     const buff = await res.blob();
     return { ok: res.ok, type: buff.type, status: res.status, statusText: res.statusText };
 }
 exports.fetchUrl = fetchUrl;
 function isPngOrJpg(name) {
-    return name ? (name.endsWith('.png') || name.endsWith('.jpeg') || name.endsWith('.jpg')) : false;
+    return name ? (name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".jpg")) : false;
 }
 exports.isPngOrJpg = isPngOrJpg;
 function isImageUrlType(type) {
-    return type.startsWith('image/');
+    return type.startsWith("image/");
 }
 exports.isImageUrlType = isImageUrlType;
 function isPngOrJpgUrlType(type) {
-    return type == 'image/apng' || type == 'image/png' || type == 'image/jpeg' || type == 'image/jpg';
+    return type == "image/apng" || type == "image/png" || type == "image/jpeg" || type == "image/jpg";
 }
 exports.isPngOrJpgUrlType = isPngOrJpgUrlType;

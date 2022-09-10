@@ -1,9 +1,10 @@
 import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel } from "discord.js";
-import { JsonDB } from 'node-json-db';
+import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
 export declare function isDirectory(path: string): boolean;
 export declare function getFileName(file: string): string;
 export declare function normalize(str: string | undefined | null): string;
+export declare function getBaseLog(x: number, y: number): number;
 export declare function trimStringArray(arr: string[]): string[];
 export declare function isUrl(url: string): Promise<boolean>;
 export declare function getFileHash(file: string): Promise<string>;
