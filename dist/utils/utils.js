@@ -173,7 +173,7 @@ async function messageReply(message, content) {
     await message.reply(content);
 }
 exports.messageReply = messageReply;
-async function safeReply(interaction, content) {
+async function safeReply(interaction, content, ephemeral = false) {
     if (interaction.replied) {
         await sendToChannel(interaction.channel, content);
     }
@@ -183,7 +183,8 @@ async function safeReply(interaction, content) {
             if (content instanceof discord_js_1.EmbedBuilder) {
                 (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: (reply to /${interaction.command?.name}) -> ${embedToString(content)}`);
                 await interaction.reply({
-                    embeds: [content]
+                    embeds: [content],
+                    ephemeral: ephemeral
                 });
             }
             else if (content instanceof discord_js_1.MessagePayload) {
@@ -192,15 +193,18 @@ async function safeReply(interaction, content) {
             }
             else {
                 (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (reply to /${interaction.command?.name}) -> ${content}`);
-                await interaction.reply(content);
+                await interaction.reply({
+                    content: content,
+                    ephemeral: ephemeral
+                });
             }
         }
     }
 }
 exports.safeReply = safeReply;
-async function combinedReply(interaction, message, content) {
+async function combinedReply(interaction, message, content, ephemeral = false) {
     if (interaction) {
-        await safeReply(interaction, content);
+        await safeReply(interaction, content, ephemeral);
     }
     else if (message) {
         await sendToChannel(message.channel, content);

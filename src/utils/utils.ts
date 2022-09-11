@@ -154,7 +154,7 @@ export async function messageReply(message: Message, content: string): Promise<v
     await message.reply(content);
 }
 
-export async function safeReply(interaction: CommandInteraction, content: string | EmbedBuilder | MessagePayload): Promise<void> {
+export async function safeReply(interaction: CommandInteraction, content: string | EmbedBuilder | MessagePayload, ephemeral = false): Promise<void> {
     if (interaction.replied) {
         await sendToChannel(interaction.channel, content);
     } else {
@@ -163,22 +163,26 @@ export async function safeReply(interaction: CommandInteraction, content: string
             if (content instanceof EmbedBuilder) {
                 info(`channel ${wrap(getChannelName(channel), colors.GREEN)}: (reply to /${interaction.command?.name}) -> ${embedToString(content)}`);
                 await interaction.reply({
-                    embeds: [content]
+                    embeds: [content],
+                    ephemeral: ephemeral
                 });
             } else if (content instanceof MessagePayload) {
                 info(`channel ${wrap(getChannelName(channel), colors.LIGHT_BLUE)}: (reply to /${interaction.command?.name}) -> ${payloadToString(content)}`);
                 await interaction.reply(content);
             } else {
                 info(`channel ${wrap(getChannelName(channel), colors.LIGHTER_BLUE)}: (reply to /${interaction.command?.name}) -> ${content}`);
-                await interaction.reply(content);
+                await interaction.reply({ 
+                    content: content,
+                    ephemeral: ephemeral
+                });
             }
         }
     }
 }
 
-export async function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: string | EmbedBuilder | MessagePayload): Promise<void> {
+export async function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: string | EmbedBuilder | MessagePayload, ephemeral = false): Promise<void> {
     if (interaction) {
-        await safeReply(interaction, content);
+        await safeReply(interaction, content, ephemeral);
     } else if (message) {
         await sendToChannel(message.channel, content);
     }
