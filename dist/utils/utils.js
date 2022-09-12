@@ -180,23 +180,39 @@ async function safeReply(interaction, content, ephemeral = false) {
     else {
         const channel = interaction.channel;
         if (channel) {
+            const deffered_str = interaction.deferred ? "edited reply" : "reply";
             if (content instanceof discord_js_1.EmbedBuilder) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: (reply to /${interaction.command?.name}) -> ${embedToString(content)}`);
-                await interaction.reply({
-                    embeds: [content],
-                    ephemeral: ephemeral
-                });
+                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: (${deffered_str} to /${interaction.command?.name}) -> ${embedToString(content)}`);
+                if (interaction.deferred) {
+                    await interaction.editReply({
+                        embeds: [content]
+                    });
+                }
+                else {
+                    await interaction.reply({
+                        embeds: [content],
+                        ephemeral: ephemeral
+                    });
+                }
             }
             else if (content instanceof discord_js_1.MessagePayload) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: (reply to /${interaction.command?.name}) -> ${payloadToString(content)}`);
-                await interaction.reply(content);
+                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${payloadToString(content)}`);
+                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
+                await replyFunc(content);
             }
             else {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (reply to /${interaction.command?.name}) -> ${content}`);
-                await interaction.reply({
-                    content: content,
-                    ephemeral: ephemeral
-                });
+                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${content}`);
+                if (interaction.deferred) {
+                    await interaction.editReply({
+                        content: content
+                    });
+                }
+                else {
+                    await interaction.reply({
+                        content: content,
+                        ephemeral: ephemeral
+                    });
+                }
             }
         }
     }
