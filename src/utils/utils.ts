@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, InteractionReplyOptions } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";
@@ -108,26 +108,46 @@ function embedToString(embed: EmbedBuilder) {
     return str;
 }
 
-function payloadToString(payload: MessagePayload) {
-    let str: string = payload.options.content || "";
-    if (payload.options.files) {
-        str += "\nfiles:\n";
-        for (const file of payload.options.files) {
+function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
+    let str = payload.content || "";
+    if (payload.files) {
+        str += "\nfiles";
+        for (const file of payload.files) {
             str += `\n${file}`;
+        }
+    }
+    if (payload.embeds) {
+        str += "\nfiles";
+        for (const embed of payload.embeds) {
+            str += `\n${embed}`;
+        }
+    }
+    if (payload.attachments) {
+        str += "\nattachments";
+        for (const attachment of payload.attachments) {
+            str += `\n${attachment.toJSON()}`;
+        }
+    }
+    if (payload.components) {
+        str += "\ncomponents";
+        for (const component of payload.components) {
+            str += `\n${component}`;
         }
     }
     return str;
 }
 
-type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions;
+type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions | InteractionReplyOptions;
 
 function messageContentToString(content: MessageContents) {
     if (content instanceof EmbedBuilder) {
         return embedToString(content);
     } else if (content instanceof MessagePayload) {
-        return payloadToString(content);
+        return payloadToString(content.options);
+    } else if (typeof content === "string") {
+        return content;
     } else {
-        return content.toString();
+        return payloadToString(content);
     }
 }
 
@@ -152,9 +172,18 @@ export async function sendToChannel(channel: TextBasedChannel | null, content: M
                 await channel.send(slice);
                 pos += 1999;
             }
-        } else {
-            // MessagePayload and MessageOptions
+        } else if (content instanceof MessagePayload) {
             await channel.send(content);
+        } else {
+            // MessageOptions, InteractionReplyOptions
+            await channel.send({
+                embeds: content.embeds,
+                files: content.files,
+                attachments: content.attachments,
+                content: content.content,
+                components: content.components,
+                allowedMentions: content.allowedMentions 
+            });
         }
     }
 }
@@ -163,6 +192,7 @@ export async function messageReply(message: Message, content: string): Promise<v
     info(`channel ${wrap(getChannelName(message.channel), colors.PURPLE)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
+
 
 export async function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral = false): Promise<void> {
     if (interaction.replied) {
@@ -197,10 +227,34 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                         ephemeral: ephemeral
                     });
                 }
+            } else if (content instanceof MessagePayload) {
+                if (interaction.deferred) {
+                    await interaction.editReply(content);
+                } else {
+                    await interaction.reply(content);
+                }
             } else {
-                // MessagePayload and MessageOptions
-                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
-                await replyFunc(content);
+                // InteractionReplyOptions and MessageOptions
+                if (interaction.deferred) {
+                    await interaction.editReply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions 
+                    });
+                } else {
+                    await interaction.reply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions,
+                        ephemeral: true,
+                    });
+                }
             }
         }
     }
