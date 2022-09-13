@@ -130,24 +130,41 @@ function payloadToString(payload) {
     if (payload.files) {
         str += "\nfiles";
         for (const file of payload.files) {
-            str += `\n${file}`;
+            if (file instanceof discord_js_1.AttachmentBuilder) {
+                str += `\n${file.name}: ${file.description}`;
+            }
+            else if (file instanceof Buffer) {
+                str += `\nbuffer(${file.byteLength}): ${file.buffer}`;
+            }
+            else if (file instanceof discord_js_1.Attachment) {
+                str += `\n ${file.name}: ${file.description}, (url: ${file.url}) (size ${file.size})`;
+            }
+            else {
+                // AttachmentPayload - can't import
+                // JSONEncodable<APIAttachment> - strange stuff
+                // AttachmentPayload - strange stuff
+                str += `\n${file}`;
+            }
         }
     }
     if (payload.embeds) {
-        str += "\nfiles";
+        str += "\nembeds";
         for (const embed of payload.embeds) {
+            // TODO: process each type separately
             str += `\n${embed}`;
         }
     }
     if (payload.attachments) {
         str += "\nattachments";
         for (const attachment of payload.attachments) {
+            // TODO: process each type separately
             str += `\n${attachment.toJSON()}`;
         }
     }
     if (payload.components) {
         str += "\ncomponents";
         for (const component of payload.components) {
+            // TODO: process each type separately
             str += `\n${component}`;
         }
     }
@@ -273,7 +290,7 @@ async function safeReply(interaction, content, ephemeral = false) {
                         content: content.content,
                         components: content.components,
                         allowedMentions: content.allowedMentions,
-                        ephemeral: true,
+                        ephemeral: ephemeral,
                     });
                 }
             }
