@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, InteractionReplyOptions } from "discord.js";
 import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
 export declare function isDirectory(path: string): boolean;
@@ -23,7 +23,7 @@ export declare function limitLength(str: string, max_length: number): string;
  */
 export declare function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number];
 export declare function perc2color(perc: number): ColorResolvable;
-declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions;
+declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions | InteractionReplyOptions;
 export declare function getChannelName(channel: TextBasedChannel): string;
 export declare function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;

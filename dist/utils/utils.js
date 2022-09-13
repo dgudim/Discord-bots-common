@@ -126,11 +126,29 @@ function embedToString(embed) {
     return str;
 }
 function payloadToString(payload) {
-    let str = payload.options.content || "";
-    if (payload.options.files) {
-        str += "\nfiles:\n";
-        for (const file of payload.options.files) {
+    let str = payload.content || "";
+    if (payload.files) {
+        str += "\nfiles";
+        for (const file of payload.files) {
             str += `\n${file}`;
+        }
+    }
+    if (payload.embeds) {
+        str += "\nfiles";
+        for (const embed of payload.embeds) {
+            str += `\n${embed}`;
+        }
+    }
+    if (payload.attachments) {
+        str += "\nattachments";
+        for (const attachment of payload.attachments) {
+            str += `\n${attachment.toJSON()}`;
+        }
+    }
+    if (payload.components) {
+        str += "\ncomponents";
+        for (const component of payload.components) {
+            str += `\n${component}`;
         }
     }
     return str;
@@ -140,10 +158,13 @@ function messageContentToString(content) {
         return embedToString(content);
     }
     else if (content instanceof discord_js_1.MessagePayload) {
-        return payloadToString(content);
+        return payloadToString(content.options);
+    }
+    else if (typeof content === "string") {
+        return content;
     }
     else {
-        return content.toString();
+        return payloadToString(content);
     }
 }
 function getChannelName(channel) {
@@ -167,9 +188,19 @@ async function sendToChannel(channel, content, log_asError) {
                 pos += 1999;
             }
         }
-        else {
-            // MessagePayload and MessageOptions
+        else if (content instanceof discord_js_1.MessagePayload) {
             await channel.send(content);
+        }
+        else {
+            // MessageOptions, InteractionReplyOptions
+            await channel.send({
+                embeds: content.embeds,
+                files: content.files,
+                attachments: content.attachments,
+                content: content.content,
+                components: content.components,
+                allowedMentions: content.allowedMentions
+            });
         }
     }
 }
@@ -214,10 +245,37 @@ async function safeReply(interaction, content, ephemeral = false) {
                     });
                 }
             }
+            else if (content instanceof discord_js_1.MessagePayload) {
+                if (interaction.deferred) {
+                    await interaction.editReply(content);
+                }
+                else {
+                    await interaction.reply(content);
+                }
+            }
             else {
-                // MessagePayload and MessageOptions
-                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
-                await replyFunc(content);
+                // InteractionReplyOptions and MessageOptions
+                if (interaction.deferred) {
+                    await interaction.editReply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions
+                    });
+                }
+                else {
+                    await interaction.reply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions,
+                        ephemeral: true,
+                    });
+                }
             }
         }
     }
