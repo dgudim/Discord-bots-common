@@ -135,34 +135,40 @@ function payloadToString(payload) {
     }
     return str;
 }
+function messageContentToString(content) {
+    if (content instanceof discord_js_1.EmbedBuilder) {
+        return embedToString(content);
+    }
+    else if (content instanceof discord_js_1.MessagePayload) {
+        return payloadToString(content);
+    }
+    else {
+        return content.toString();
+    }
+}
 function getChannelName(channel) {
     return channel.lastMessage?.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
 }
 exports.getChannelName = getChannelName;
 async function sendToChannel(channel, content, log_asError) {
     if (channel) {
+        (0, logger_1.log)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
         if (content instanceof discord_js_1.EmbedBuilder) {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: ${embedToString(content)}`);
             await channel.send({
                 embeds: [content]
             });
-        }
-        else if (content instanceof discord_js_1.MessagePayload) {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: ${payloadToString(content)}`);
-            await channel.send(content);
         }
         else if (typeof content === "string") {
             const len = content.length;
             let pos = 0;
             while (pos < len) {
                 const slice = content.slice(pos, pos + 1999);
-                (0, logger_1.log)(`channel ${(0, colors_1.wrap)(channel, colors_1.colors.CYAN)}: ${content}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
                 await channel.send(slice);
                 pos += 1999;
             }
         }
         else {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: ${content}`);
+            // MessagePayload and MessageOptions
             await channel.send(content);
         }
     }
@@ -181,8 +187,8 @@ async function safeReply(interaction, content, ephemeral = false) {
         const channel = interaction.channel;
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
+            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
             if (content instanceof discord_js_1.EmbedBuilder) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: (${deffered_str} to /${interaction.command?.name}) -> ${embedToString(content)}`);
                 if (interaction.deferred) {
                     await interaction.editReply({
                         embeds: [content]
@@ -195,13 +201,7 @@ async function safeReply(interaction, content, ephemeral = false) {
                     });
                 }
             }
-            else if (content instanceof discord_js_1.MessagePayload) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${payloadToString(content)}`);
-                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
-                await replyFunc(content);
-            }
-            else {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${content}`);
+            else if (typeof content === 'string') {
                 if (interaction.deferred) {
                     await interaction.editReply({
                         content: content
@@ -213,6 +213,11 @@ async function safeReply(interaction, content, ephemeral = false) {
                         ephemeral: ephemeral
                     });
                 }
+            }
+            else {
+                // MessagePayload and MessageOptions
+                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
+                await replyFunc(content);
             }
         }
     }

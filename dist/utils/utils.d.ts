@@ -23,11 +23,12 @@ export declare function limitLength(str: string, max_length: number): string;
  */
 export declare function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number];
 export declare function perc2color(perc: number): ColorResolvable;
+declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions;
 export declare function getChannelName(channel: TextBasedChannel): string;
-export declare function sendToChannel(channel: TextBasedChannel | null, content: string | EmbedBuilder | MessagePayload | MessageOptions, log_asError?: boolean): Promise<void>;
+export declare function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;
-export declare function safeReply(interaction: CommandInteraction, content: string | EmbedBuilder | MessagePayload, ephemeral?: boolean): Promise<void>;
-export declare function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: string | EmbedBuilder | MessagePayload, ephemeral?: boolean): Promise<void>;
+export declare function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral?: boolean): Promise<void>;
+export declare function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: MessageContents, ephemeral?: boolean): Promise<void>;
 export declare function walk(dir: string): string[];
 export declare function getSimpleEmbed(title: string, description: string, color: ColorResolvable): EmbedBuilder;
 export declare function getDateTime(): string;
@@ -49,3 +50,4 @@ export declare function fetchUrl(url: string): Promise<{
 export declare function isPngOrJpg(name: string | null | undefined): boolean;
 export declare function isImageUrlType(type: string): boolean;
 export declare function isPngOrJpgUrlType(type: string): boolean;
+export {};

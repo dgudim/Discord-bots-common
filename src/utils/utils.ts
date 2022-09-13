@@ -119,31 +119,41 @@ function payloadToString(payload: MessagePayload) {
     return str;
 }
 
+type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions;
+
+function messageContentToString(content: MessageContents) {
+    if (content instanceof EmbedBuilder) {
+        return embedToString(content);
+    } else if (content instanceof MessagePayload) {
+        return payloadToString(content);
+    } else {
+        return content.toString();
+    }
+}
+
 export function getChannelName(channel: TextBasedChannel) {
     return channel.lastMessage?.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
 }
 
-export async function sendToChannel(channel: TextBasedChannel | null, content: string | EmbedBuilder | MessagePayload | MessageOptions, log_asError?: boolean): Promise<void> {
+export async function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void> {
     if (channel) {
+
+        log(`channel ${wrap(getChannelName(channel), colors.GREEN)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
+
         if (content instanceof EmbedBuilder) {
-            info(`channel ${wrap(getChannelName(channel), colors.GREEN)}: ${embedToString(content)}`);
             await channel.send({
                 embeds: [content]
             });
-        } else if (content instanceof MessagePayload) {
-            info(`channel ${wrap(getChannelName(channel), colors.LIGHT_BLUE)}: ${payloadToString(content)}`);
-            await channel.send(content);
         } else if (typeof content === "string") {
             const len = content.length;
             let pos = 0;
             while (pos < len) {
                 const slice = content.slice(pos, pos + 1999);
-                log(`channel ${wrap(channel, colors.CYAN)}: ${content}`, log_asError ? logLevel.ERROR : logLevel.INFO);
                 await channel.send(slice);
                 pos += 1999;
             }
         } else {
-            info(`channel ${wrap(getChannelName(channel), colors.LIGHTER_BLUE)}: ${content}`);
+            // MessagePayload and MessageOptions
             await channel.send(content);
         }
     }
@@ -154,15 +164,17 @@ export async function messageReply(message: Message, content: string): Promise<v
     await message.reply(content);
 }
 
-export async function safeReply(interaction: CommandInteraction, content: string | EmbedBuilder | MessagePayload, ephemeral = false): Promise<void> {
+export async function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral = false): Promise<void> {
     if (interaction.replied) {
         await sendToChannel(interaction.channel, content);
     } else {
         const channel = interaction.channel;
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
+
+            info(`channel ${wrap(getChannelName(channel), colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
+
             if (content instanceof EmbedBuilder) {
-                info(`channel ${wrap(getChannelName(channel), colors.GREEN)}: (${deffered_str} to /${interaction.command?.name}) -> ${embedToString(content)}`);
                 if (interaction.deferred) {
                     await interaction.editReply({
                         embeds: [content]
@@ -173,13 +185,8 @@ export async function safeReply(interaction: CommandInteraction, content: string
                         ephemeral: ephemeral
                     });
                 }
-            } else if (content instanceof MessagePayload) {
-                info(`channel ${wrap(getChannelName(channel), colors.LIGHT_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${payloadToString(content)}`);
-                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
-                await replyFunc(content);
-            } else {
-                info(`channel ${wrap(getChannelName(channel), colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${content}`);
-
+            } else if (typeof content === 'string') {
+                
                 if (interaction.deferred) {
                     await interaction.editReply({
                         content: content
@@ -190,12 +197,16 @@ export async function safeReply(interaction: CommandInteraction, content: string
                         ephemeral: ephemeral
                     });
                 }
+            } else {
+                // MessagePayload and MessageOptions
+                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
+                await replyFunc(content);
             }
         }
     }
 }
 
-export async function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: string | EmbedBuilder | MessagePayload, ephemeral = false): Promise<void> {
+export async function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: MessageContents, ephemeral = false): Promise<void> {
     if (interaction) {
         await safeReply(interaction, content, ephemeral);
     } else if (message) {
