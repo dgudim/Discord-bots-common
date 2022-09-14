@@ -128,7 +128,15 @@ function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
                 str += `\n${file}`;
             } else if ('attachment' in file) {
                 // AttachmentBuilder, AttachmentPayload and AttachmentBuilder
-                str += `\n${file.name}: ${file.description}, data: ${file.attachment}`;
+
+                let attachment = "stream";
+                if (file.attachment instanceof Buffer) {
+                    attachment = `buffer(${ file.attachment.byteLength }`;
+                } else if (typeof file.attachment === "string") {
+                    attachment = file.attachment;
+                }
+
+                str += `\n${file.name}: ${file.description}, data: ${attachment}`;
             } else if (file instanceof Buffer) {
                 str += `\nbuffer(${file.byteLength})`;
             } else if (file instanceof Attachment) {
