@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, InteractionReplyOptions, AttachmentBuilder, Attachment } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, InteractionReplyOptions, AttachmentBuilder, Attachment, APIEmbed, JSONEncodable } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";
@@ -100,11 +100,22 @@ export function perc2color(perc: number): ColorResolvable {
     return ("#" + ("000000" + h.toString(16)).slice(-6)) as ColorResolvable;
 }
 
-function embedToString(embed: EmbedBuilder) {
-    let str = embed.data.title + "\n" + embed.data.description;
-    for (const field of embed.data.fields || []) {
-        str += `\n${field.name}: ${field.value}`;
+function embedToString(embed: APIEmbed | JSONEncodable<APIEmbed>) {
+    let str = "----------------------------------------------------------\n";
+
+    if ('author' in embed) {
+        str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
+        for (const field of embed.fields || []) {
+            str += `\n${field.name}: ${field.value}`;
+        }
+        if (embed.footer) {
+            str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`
+        }
+    } else if ('toJSON' in embed){
+        str += `JSON encodable embed: ${embed.toJSON()}`;
     }
+
+    str += "\n----------------------------------------------------------";
     return str;
 }
 
@@ -113,39 +124,30 @@ function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
     if (payload.files) {
         str += "\nfiles";
         for (const file of payload.files) {
-            if (file instanceof AttachmentBuilder) {
-                str += `\n${file.name}: ${file.description}`;
+            if (typeof file === "string") {
+                str += `\n${file}`;
+            } else if ('attachment' in file) {
+                // AttachmentBuilder, AttachmentPayload and AttachmentBuilder
+                str += `\n${file.name}: ${file.description}, data: ${file.attachment}`;
             } else if (file instanceof Buffer) {
-                str += `\nbuffer(${file.byteLength}): ${file.buffer}`;
+                str += `\nbuffer(${file.byteLength})`;
             } else if (file instanceof Attachment) {
                 str += `\n ${file.name}: ${file.description}, (url: ${file.url}) (size ${file.size})`;
-            } else {
-                // AttachmentPayload - can't import
-                // JSONEncodable<APIAttachment> - strange stuff
-                // AttachmentPayload - strange stuff
-                str += `\n${file}`;
+            } else if ('toJSON' in file){
+                str += `\n${file.toJSON()}`;
             }
         }
     }
     if (payload.embeds) {
-        str += "\nembeds";
+        str += "\nembeds:";
         for (const embed of payload.embeds) {
-            // TODO: process each type separately
-            str += `\n${embed}`;
+            str += `\n${embedToString(embed)}`;
         }
     }
     if (payload.attachments) {
         str += "\nattachments";
         for (const attachment of payload.attachments) {
-            // TODO: process each type separately
             str += `\n${attachment.toJSON()}`;
-        }
-    }
-    if (payload.components) {
-        str += "\ncomponents";
-        for (const component of payload.components) {
-            // TODO: process each type separately
-            str += `\n${component}`;
         }
     }
     return str;
@@ -155,7 +157,7 @@ type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions |
 
 function messageContentToString(content: MessageContents) {
     if (content instanceof EmbedBuilder) {
-        return embedToString(content);
+        return embedToString(content.data);
     } else if (content instanceof MessagePayload) {
         return payloadToString(content.options);
     } else if (typeof content === "string") {
