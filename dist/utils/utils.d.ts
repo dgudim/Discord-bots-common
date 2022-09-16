@@ -6,7 +6,7 @@ export declare function getFileName(file: string): string;
 export declare function normalize(str: string | undefined | null): string;
 export declare function getBaseLog(x: number, y: number): number;
 export declare function trimStringArray(arr: string[]): string[];
-export declare function isUrl(url: string): Promise<boolean>;
+export declare function isUrl(url: string | undefined | null): Promise<boolean>;
 export declare function getFileHash(file: string): Promise<string>;
 export declare function getValueIfExists(db: JsonDB, search_path: string, get_path?: string): Promise<any>;
 export declare function limitLength(str: string, max_length: number): string;

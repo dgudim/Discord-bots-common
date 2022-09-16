@@ -32,6 +32,9 @@ function trimStringArray(arr) {
 }
 exports.trimStringArray = trimStringArray;
 async function isUrl(url) {
+    if (!url) {
+        return false;
+    }
     return (await fetch(url)).ok;
 }
 exports.isUrl = isUrl;

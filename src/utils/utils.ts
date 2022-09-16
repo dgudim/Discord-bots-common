@@ -34,7 +34,10 @@ export function trimStringArray(arr: string[]): string[] {
     });
 }
 
-export async function isUrl(url: string): Promise<boolean> {
+export async function isUrl(url: string | undefined | null): Promise<boolean> {
+    if(!url) {
+        return false;
+    }
     return (await fetch(url)).ok;
 }
 
