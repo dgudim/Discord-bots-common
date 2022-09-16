@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, JSONEncodable, APIEmbed, InteractionReplyOptions, Attachment } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";

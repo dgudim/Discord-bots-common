@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, InteractionReplyOptions } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, InteractionReplyOptions } from "discord.js";
 import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
 export declare function isDirectory(path: string): boolean;
@@ -29,6 +29,7 @@ export declare function sendToChannel(channel: TextBasedChannel | null, content:
 export declare function messageReply(message: Message, content: string): Promise<void>;
 export declare function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral?: boolean): Promise<void>;
 export declare function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: MessageContents, ephemeral?: boolean): Promise<void>;
+export declare function getAllImageAttachements(interaction: ChatInputCommandInteraction | undefined, message: Message | undefined, msg_url?: string): Promise<string[]>;
 export declare function walk(dir: string): string[];
 export declare function getSimpleEmbed(title: string, description: string, color: ColorResolvable): EmbedBuilder;
 export declare function getDateTime(): string;
