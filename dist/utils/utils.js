@@ -119,21 +119,79 @@ function perc2color(perc) {
 }
 exports.perc2color = perc2color;
 function embedToString(embed) {
-    let str = embed.data.title + "\n" + embed.data.description;
-    for (const field of embed.data.fields || []) {
-        str += `\n${field.name}: ${field.value}`;
+    let str = "----------------------------------------------------------\n";
+    if ('author' in embed) {
+        str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
+        for (const field of embed.fields || []) {
+            str += `\n${field.name}: ${field.value}`;
+        }
+        if (embed.footer) {
+            str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`;
+        }
     }
+    else if ('toJSON' in embed) {
+        str += `JSON encodable embed: ${embed.toJSON()}`;
+    }
+    str += "\n----------------------------------------------------------";
     return str;
 }
 function payloadToString(payload) {
-    let str = payload.options.content || "";
-    if (payload.options.files) {
-        str += "\nfiles:\n";
-        for (const file of payload.options.files) {
-            str += `\n${file}`;
+    let str = payload.content || "";
+    if (payload.files) {
+        str += "\nfiles";
+        for (const file of payload.files) {
+            if (typeof file === "string") {
+                str += `\n${file}`;
+            }
+            else if ('attachment' in file) {
+                // AttachmentBuilder, AttachmentPayload and AttachmentBuilder
+                let attachment = "stream";
+                if (file.attachment instanceof Buffer) {
+                    attachment = `buffer(${file.attachment.byteLength}`;
+                }
+                else if (typeof file.attachment === "string") {
+                    attachment = file.attachment;
+                }
+                str += `\n${file.name}: ${file.description}, data: ${attachment}`;
+            }
+            else if (file instanceof Buffer) {
+                str += `\nbuffer(${file.byteLength})`;
+            }
+            else if (file instanceof discord_js_1.Attachment) {
+                str += `\n ${file.name}: ${file.description}, (url: ${file.url}) (size ${file.size})`;
+            }
+            else if ('toJSON' in file) {
+                str += `\n${file.toJSON()}`;
+            }
+        }
+    }
+    if (payload.embeds) {
+        str += "\nembeds:";
+        for (const embed of payload.embeds) {
+            str += `\n${embedToString(embed)}`;
+        }
+    }
+    if (payload.attachments) {
+        str += "\nattachments";
+        for (const attachment of payload.attachments) {
+            str += `\n${attachment.toJSON()}`;
         }
     }
     return str;
+}
+function messageContentToString(content) {
+    if (content instanceof discord_js_1.EmbedBuilder) {
+        return embedToString(content.data);
+    }
+    else if (content instanceof discord_js_1.MessagePayload) {
+        return payloadToString(content.options);
+    }
+    else if (typeof content === "string") {
+        return content;
+    }
+    else {
+        return payloadToString(content);
+    }
 }
 function getChannelName(channel) {
     return channel.lastMessage?.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
@@ -141,29 +199,34 @@ function getChannelName(channel) {
 exports.getChannelName = getChannelName;
 async function sendToChannel(channel, content, log_asError) {
     if (channel) {
+        (0, logger_1.log)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
         if (content instanceof discord_js_1.EmbedBuilder) {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: ${embedToString(content)}`);
             await channel.send({
                 embeds: [content]
             });
-        }
-        else if (content instanceof discord_js_1.MessagePayload) {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: ${payloadToString(content)}`);
-            await channel.send(content);
         }
         else if (typeof content === "string") {
             const len = content.length;
             let pos = 0;
             while (pos < len) {
                 const slice = content.slice(pos, pos + 1999);
-                (0, logger_1.log)(`channel ${(0, colors_1.wrap)(channel, colors_1.colors.CYAN)}: ${content}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
                 await channel.send(slice);
                 pos += 1999;
             }
         }
-        else {
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: ${content}`);
+        else if (content instanceof discord_js_1.MessagePayload) {
             await channel.send(content);
+        }
+        else {
+            // MessageOptions, InteractionReplyOptions
+            await channel.send({
+                embeds: content.embeds,
+                files: content.files,
+                attachments: content.attachments,
+                content: content.content,
+                components: content.components,
+                allowedMentions: content.allowedMentions
+            });
         }
     }
 }
@@ -181,8 +244,8 @@ async function safeReply(interaction, content, ephemeral = false) {
         const channel = interaction.channel;
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
+            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
             if (content instanceof discord_js_1.EmbedBuilder) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: (${deffered_str} to /${interaction.command?.name}) -> ${embedToString(content)}`);
                 if (interaction.deferred) {
                     await interaction.editReply({
                         embeds: [content]
@@ -195,13 +258,7 @@ async function safeReply(interaction, content, ephemeral = false) {
                     });
                 }
             }
-            else if (content instanceof discord_js_1.MessagePayload) {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHT_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${payloadToString(content)}`);
-                const replyFunc = interaction.deferred ? interaction.editReply : interaction.reply;
-                await replyFunc(content);
-            }
-            else {
-                (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${content}`);
+            else if (typeof content === 'string') {
                 if (interaction.deferred) {
                     await interaction.editReply({
                         content: content
@@ -211,6 +268,38 @@ async function safeReply(interaction, content, ephemeral = false) {
                     await interaction.reply({
                         content: content,
                         ephemeral: ephemeral
+                    });
+                }
+            }
+            else if (content instanceof discord_js_1.MessagePayload) {
+                if (interaction.deferred) {
+                    await interaction.editReply(content);
+                }
+                else {
+                    await interaction.reply(content);
+                }
+            }
+            else {
+                // InteractionReplyOptions and MessageOptions
+                if (interaction.deferred) {
+                    await interaction.editReply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions
+                    });
+                }
+                else {
+                    await interaction.reply({
+                        embeds: content.embeds,
+                        files: content.files,
+                        attachments: content.attachments,
+                        content: content.content,
+                        components: content.components,
+                        allowedMentions: content.allowedMentions,
+                        ephemeral: ephemeral,
                     });
                 }
             }
