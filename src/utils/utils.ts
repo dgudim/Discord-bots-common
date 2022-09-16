@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";
@@ -203,10 +203,39 @@ export async function combinedReply(interaction: CommandInteraction | undefined,
     }
 }
 
+export async function getAllImageAttachements(interaction: ChatInputCommandInteraction | undefined, message: Message | undefined, msg_url?: string)
+    : Promise<string[]> {
+
+    let url = interaction ? interaction.options.getString('url') : msg_url;
+    let channel = interaction ? interaction.channel : message!.channel;
+
+    let urls: string[] = [];
+    if (url) {
+        if (await isUrl(url)) {
+            urls.push(url);
+        } else {
+            await combinedReply(interaction, message, "Invalid Url");
+        }
+    }
+
+    if (message?.attachments.size) {
+        for (let attachement of message.attachments) {
+            let res = await fetchUrl(attachement[1].url);
+            if (isImageUrlType(res.type)) {
+                urls.push(attachement[1].url);
+            } else {
+                await sendToChannel(channel, `attachement ${attachement[1].name} does not look like an image`);
+            }
+        }
+    }
+
+    return urls;
+}
+
 export function walk(dir: string): string[] {
     let results: Array<string> = [];
     const list = fs.readdirSync(dir);
-    list.forEach(function (file) {
+    list.forEach(function (file: string) {
         file = dir + "/" + file;
         const stat = fs.statSync(file);
         if (stat && stat.isDirectory()) {
