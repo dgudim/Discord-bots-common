@@ -15,14 +15,14 @@ export function testEnvironmentVar(variable: string, var_name: string, exit: boo
     }
 }
 
-export function drkInit(client: Client) {
+export function dkrInit(client: Client) {
     const handler = new DKRCommands(client, {
         commandsDir: path.join(__dirname, 'commands'),
         typeScript: true,
         botOwners: process.env.OWNERS?.split(","),
         testServers: process.env.TEST_SERVERS?.split(",")
     });
-    
+
     info(`${wrap("💁 Client ready", colors.LIGHT_YELLOW)}`);
     return handler;
 }
