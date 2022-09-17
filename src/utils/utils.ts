@@ -316,7 +316,7 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
             if (isImageUrlType(res.type)) {
                 urls.push(attachement_url);
             } else {
-                await sendToChannel(channel, `attachement ${attachement_url} does not look like an image`);
+                await sendToChannel(channel, `Attachement ${attachement_url} does not look like an image`);
             }
         } else {
             urls.push(attachement_url);

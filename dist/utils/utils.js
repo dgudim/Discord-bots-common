@@ -337,7 +337,7 @@ async function getAllUrlFileAttachements(interaction, url_key, attachement_key, 
                 urls.push(attachement_url);
             }
             else {
-                await sendToChannel(channel, `attachement ${attachement_url} does not look like an image`);
+                await sendToChannel(channel, `Attachement ${attachement_url} does not look like an image`);
             }
         }
         else {
