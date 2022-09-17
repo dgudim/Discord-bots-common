@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, JSONEncodable, APIEmbed, InteractionReplyOptions, Attachment } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, GuildTextBasedChannel, APIEmbed, InteractionReplyOptions, Attachment } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";
@@ -10,6 +10,8 @@ import { info, log, logLevel } from "./logger";
 
 export const eight_mb = 1024 * 1024 * 8;
 
+type nullableString = string | undefined | null;
+
 export function isDirectory(path: string): boolean {
     return fs.existsSync(path) && fs.statSync(path).isDirectory();
 }
@@ -18,7 +20,7 @@ export function getFileName(file: string): string {
     return file.substring(file.lastIndexOf("/") + 1);
 }
 
-export function normalize(str: string | undefined | null): string {
+export function normalize(str: nullableString): string {
     return str ? str.toLowerCase().trim() : "";
 }
 
@@ -34,7 +36,7 @@ export function trimStringArray(arr: string[]): string[] {
     });
 }
 
-export async function isUrl(url: string | undefined | null): Promise<boolean> {
+export async function isUrl(url: nullableString): Promise<boolean> {
     if(!url) {
         return false;
     }
@@ -103,10 +105,10 @@ export function perc2color(perc: number): ColorResolvable {
     return ("#" + ("000000" + h.toString(16)).slice(-6)) as ColorResolvable;
 }
 
-function embedToString(embed: APIEmbed | JSONEncodable<APIEmbed>) {
-    let str = "----------------------------------------------------------\n";
+function embedToString(embed: APIEmbed) {
+    let str = "\n----------------------------------------------------------\n";
 
-    if ('author' in embed) {
+    if ('author' in embed || 'title' in embed || 'description' in embed) {
         str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
@@ -114,8 +116,6 @@ function embedToString(embed: APIEmbed | JSONEncodable<APIEmbed>) {
         if (embed.footer) {
             str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`
         }
-    } else if ('toJSON' in embed){
-        str += `JSON encodable embed: ${embed.toJSON()}`;
     }
 
     str += "\n----------------------------------------------------------";
@@ -152,7 +152,11 @@ function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
     if (payload.embeds) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
-            str += `\n${embedToString(embed)}`;
+            if(!('toJSON' in embed)) {
+                str += embedToString(embed);
+            } else {
+                str += `\n json encodable embed: ${embed.toJSON()}`
+            }
         }
     }
     if (payload.attachments) {
@@ -179,7 +183,11 @@ function messageContentToString(content: MessageContents) {
 }
 
 export function getChannelName(channel: TextBasedChannel) {
-    return channel.lastMessage?.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+    if('guild' in channel) {
+        return channel.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+    } else {
+        return `DM with ${channel.recipient?.tag}`;
+    }
 }
 
 export async function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void> {
@@ -284,14 +292,6 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                 }
             }
         }
-    }
-}
-
-export async function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: MessageContents, ephemeral = false): Promise<void> {
-    if (interaction) {
-        await safeReply(interaction, content, ephemeral);
-    } else if (message) {
-        await sendToChannel(message.channel, content);
     }
 }
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.combinedReply = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
+exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const hash_wasm_1 = require("hash-wasm");
@@ -122,8 +122,8 @@ function perc2color(perc) {
 }
 exports.perc2color = perc2color;
 function embedToString(embed) {
-    let str = "----------------------------------------------------------\n";
-    if ('author' in embed) {
+    let str = "\n----------------------------------------------------------\n";
+    if ('author' in embed || 'title' in embed || 'description' in embed) {
         str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
@@ -131,9 +131,6 @@ function embedToString(embed) {
         if (embed.footer) {
             str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`;
         }
-    }
-    else if ('toJSON' in embed) {
-        str += `JSON encodable embed: ${embed.toJSON()}`;
     }
     str += "\n----------------------------------------------------------";
     return str;
@@ -171,7 +168,12 @@ function payloadToString(payload) {
     if (payload.embeds) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
-            str += `\n${embedToString(embed)}`;
+            if (!('toJSON' in embed)) {
+                str += embedToString(embed);
+            }
+            else {
+                str += `\n json encodable embed: ${embed.toJSON()}`;
+            }
         }
     }
     if (payload.attachments) {
@@ -197,7 +199,12 @@ function messageContentToString(content) {
     }
 }
 function getChannelName(channel) {
-    return channel.lastMessage?.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+    if ('guild' in channel) {
+        return channel.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+    }
+    else {
+        return `DM with ${channel.recipient?.tag}`;
+    }
 }
 exports.getChannelName = getChannelName;
 async function sendToChannel(channel, content, log_asError) {
@@ -310,15 +317,6 @@ async function safeReply(interaction, content, ephemeral = false) {
     }
 }
 exports.safeReply = safeReply;
-async function combinedReply(interaction, message, content, ephemeral = false) {
-    if (interaction) {
-        await safeReply(interaction, content, ephemeral);
-    }
-    else if (message) {
-        await sendToChannel(message.channel, content);
-    }
-}
-exports.combinedReply = combinedReply;
 async function getAllUrlFileAttachements(interaction, url_key, attachement_key, check_if_image) {
     let arg_url = interaction.options.getString(url_key);
     let attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
