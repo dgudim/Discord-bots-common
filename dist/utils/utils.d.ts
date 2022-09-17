@@ -29,7 +29,7 @@ export declare function sendToChannel(channel: TextBasedChannel | null, content:
 export declare function messageReply(message: Message, content: string): Promise<void>;
 export declare function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral?: boolean): Promise<void>;
 export declare function combinedReply(interaction: CommandInteraction | undefined, message: Message | undefined, content: MessageContents, ephemeral?: boolean): Promise<void>;
-export declare function getAllImageAttachements(interaction: ChatInputCommandInteraction | undefined, message: Message | undefined, msg_url?: string): Promise<string[]>;
+export declare function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction, url_key: string, attachement_key: string, check_if_image?: boolean): Promise<string[]>;
 export declare function walk(dir: string): string[];
 export declare function getSimpleEmbed(title: string, description: string, color: ColorResolvable): EmbedBuilder;
 export declare function getDateTime(): string;

@@ -295,31 +295,34 @@ export async function combinedReply(interaction: CommandInteraction | undefined,
     }
 }
 
-export async function getAllImageAttachements(interaction: ChatInputCommandInteraction | undefined, message: Message | undefined, msg_url?: string)
+export async function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction, url_key: string, attachement_key: string, check_if_image?: boolean)
     : Promise<string[]> {
 
-    let url = interaction ? interaction.options.getString('url') : msg_url;
-    let channel = interaction ? interaction.channel : message!.channel;
+    let arg_url = interaction.options.getString(url_key);
+    let attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
+    let channel = interaction.channel;
 
     let urls: string[] = [];
-    if (url) {
-        if (await isUrl(url)) {
-            urls.push(url);
-        } else {
-            await combinedReply(interaction, message, "Invalid Url");
-        }
+    if (await isUrl(arg_url)) {
+        urls.push(arg_url!);
+    } else if (arg_url) {
+        await safeReply(interaction, "Invalid Url");
     }
 
-    if (message?.attachments.size) {
-        for (let attachement of message.attachments) {
-            let res = await fetchUrl(attachement[1].url);
+
+    if (await isUrl(attachement_url)) {
+        if (check_if_image) {
+            let res = await fetchUrl(attachement_url);
             if (isImageUrlType(res.type)) {
-                urls.push(attachement[1].url);
+                urls.push(attachement_url);
             } else {
-                await sendToChannel(channel, `attachement ${attachement[1].name} does not look like an image`);
+                await sendToChannel(channel, `attachement ${attachement_url} does not look like an image`);
             }
+        } else {
+            urls.push(attachement_url);
         }
     }
+    
 
     return urls;
 }

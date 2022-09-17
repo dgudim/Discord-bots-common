@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllImageAttachements = exports.combinedReply = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
+exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.combinedReply = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const hash_wasm_1 = require("hash-wasm");
@@ -319,32 +319,34 @@ async function combinedReply(interaction, message, content, ephemeral = false) {
     }
 }
 exports.combinedReply = combinedReply;
-async function getAllImageAttachements(interaction, message, msg_url) {
-    let url = interaction ? interaction.options.getString('url') : msg_url;
-    let channel = interaction ? interaction.channel : message.channel;
+async function getAllUrlFileAttachements(interaction, url_key, attachement_key, check_if_image) {
+    let arg_url = interaction.options.getString(url_key);
+    let attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
+    let channel = interaction.channel;
     let urls = [];
-    if (url) {
-        if (await isUrl(url)) {
-            urls.push(url);
-        }
-        else {
-            await combinedReply(interaction, message, "Invalid Url");
-        }
+    if (await isUrl(arg_url)) {
+        urls.push(arg_url);
     }
-    if (message?.attachments.size) {
-        for (let attachement of message.attachments) {
-            let res = await fetchUrl(attachement[1].url);
+    else if (arg_url) {
+        await safeReply(interaction, "Invalid Url");
+    }
+    if (await isUrl(attachement_url)) {
+        if (check_if_image) {
+            let res = await fetchUrl(attachement_url);
             if (isImageUrlType(res.type)) {
-                urls.push(attachement[1].url);
+                urls.push(attachement_url);
             }
             else {
-                await sendToChannel(channel, `attachement ${attachement[1].name} does not look like an image`);
+                await sendToChannel(channel, `attachement ${attachement_url} does not look like an image`);
             }
+        }
+        else {
+            urls.push(attachement_url);
         }
     }
     return urls;
 }
-exports.getAllImageAttachements = getAllImageAttachements;
+exports.getAllUrlFileAttachements = getAllUrlFileAttachements;
 function walk(dir) {
     let results = [];
     const list = fs.readdirSync(dir);
