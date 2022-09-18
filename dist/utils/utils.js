@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
+const node_json_db_1 = require("node-json-db");
 const hash_wasm_1 = require("hash-wasm");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
@@ -42,8 +43,16 @@ async function getFileHash(file) {
     return (0, hash_wasm_1.blake3)(fs.readFileSync(file));
 }
 exports.getFileHash = getFileHash;
-async function getValueIfExists(db, search_path, get_path = search_path) {
-    return await db.exists(search_path) ? db.getData(get_path) : "-";
+async function getValueIfExists(db, path) {
+    try {
+        return await db.getData(path);
+    }
+    catch (e) {
+        if (e instanceof node_json_db_1.DataError) {
+            return '-';
+        }
+        throw e;
+    }
 }
 exports.getValueIfExists = getValueIfExists;
 function limitLength(str, max_length) {

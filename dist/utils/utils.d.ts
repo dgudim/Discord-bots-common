@@ -9,7 +9,7 @@ export declare function getBaseLog(x: number, y: number): number;
 export declare function trimStringArray(arr: string[]): string[];
 export declare function isUrl(url: nullableString): Promise<boolean>;
 export declare function getFileHash(file: string): Promise<string>;
-export declare function getValueIfExists(db: JsonDB, search_path: string, get_path?: string): Promise<any>;
+export declare function getValueIfExists(db: JsonDB, path: string): Promise<any>;
 export declare function limitLength(str: string, max_length: number): string;
 /**
  * Converts an HSV color value to RGB. Conversion formula

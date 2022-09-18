@@ -1,7 +1,7 @@
 import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, InteractionReplyOptions, Attachment, Snowflake, OAuth2Guild, BaseGuild, User } from "discord.js";
 import * as fs from "fs";
 
-import { JsonDB } from "node-json-db";
+import { DataError, JsonDB } from "node-json-db";
 
 import { blake3 } from "hash-wasm";
 
@@ -47,8 +47,15 @@ export async function getFileHash(file: string): Promise<string> {
     return blake3(fs.readFileSync(file));
 }
 
-export async function getValueIfExists(db: JsonDB, search_path: string, get_path: string = search_path) {
-    return await db.exists(search_path) ? db.getData(get_path) : "-";
+export async function getValueIfExists(db: JsonDB, path: string) {
+    try {
+        return await db.getData(path);
+    } catch (e) {
+        if (e instanceof DataError) {
+            return '-';
+        }
+        throw e;
+    }
 }
 
 export function limitLength(str: string, max_length: number): string {
