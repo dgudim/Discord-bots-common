@@ -208,6 +208,9 @@ function channelToString(channel) {
 }
 exports.channelToString = channelToString;
 function guildToString(guild) {
+    if (!guild) {
+        return `🛡️ Guild: ${(0, colors_1.wrap)("invalid", colors_1.colors.RED)}`;
+    }
     if (guild instanceof discord_js_1.BaseGuild) {
         return `🛡️ Guild: ${(0, colors_1.wrap)(guild.name, colors_1.colors.PURPLE)} (${(0, colors_1.wrap)(guild.id, colors_1.colors.GRAY)})`;
     }

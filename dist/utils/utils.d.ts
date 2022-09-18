@@ -26,7 +26,7 @@ export declare function hsvToRgb(h: number, s: number, v: number): [red: number,
 export declare function perc2color(perc: number): ColorResolvable;
 declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions | InteractionReplyOptions;
 export declare function channelToString(channel: TextBasedChannel): string;
-export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild): string;
+export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string;
 export declare function userToString(user: User): string;
 export declare function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;

@@ -190,7 +190,10 @@ export function channelToString(channel: TextBasedChannel) {
     }
 }
 
-export function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild): string {
+export function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string {
+    if(!guild) {
+        return `🛡️ Guild: ${wrap("invalid", colors.RED)}`
+    }
     if(guild instanceof BaseGuild) {
         return `🛡️ Guild: ${wrap(guild.name, colors.PURPLE)} (${wrap(guild.id, colors.GRAY)})`;
     }
