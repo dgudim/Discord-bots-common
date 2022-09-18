@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.error = exports.warn = exports.info = exports.debug = exports.log = exports.logLevel = void 0;
 const colors_1 = require("./colors");
-const utils_1 = require("./utils");
 var logLevel;
 (function (logLevel) {
     logLevel["DEBUG"] = "\u001B[90m";
@@ -38,12 +37,7 @@ function warn(message) {
     log(message, logLevel.WARN);
 }
 exports.warn = warn;
-function error(message, channel) {
-    if (channel) {
-        (0, utils_1.sendToChannel)(channel, message, true);
-    }
-    else {
-        log(message, logLevel.ERROR);
-    }
+function error(message) {
+    log(message, logLevel.ERROR);
 }
 exports.error = error;

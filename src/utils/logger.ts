@@ -1,6 +1,4 @@
-import { TextBasedChannel } from "discord.js";
 import { colors, parse, wrap } from "./colors";
-import { sendToChannel } from "./utils";
 
 export enum logLevel {
     DEBUG = colors.GRAY,
@@ -37,10 +35,6 @@ export function warn(message: any) {
     log(message, logLevel.WARN);
 }
 
-export function error(message: any, channel?: TextBasedChannel) {
-    if (channel) {
-        sendToChannel(channel, message, true);
-    } else {
-        log(message, logLevel.ERROR);
-    }
+export function error(message: any) {
+    log(message, logLevel.ERROR);
 }

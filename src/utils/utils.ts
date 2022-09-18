@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, GuildTextBasedChannel, APIEmbed, InteractionReplyOptions, Attachment } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, InteractionReplyOptions, Attachment, Snowflake, OAuth2Guild, BaseGuild, User } from "discord.js";
 import * as fs from "fs";
 
 import { JsonDB } from "node-json-db";
@@ -182,18 +182,29 @@ function messageContentToString(content: MessageContents) {
     }
 }
 
-export function getChannelName(channel: TextBasedChannel) {
+export function channelToString(channel: TextBasedChannel) {
     if('guild' in channel) {
-        return channel.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+        return `Channel: ${wrap(channel.name || "private " + channel, colors.GREEN)} (${wrap(channel.id, colors.GRAY)})`;
     } else {
-        return `DM with ${channel.recipient?.tag}`;
+        return `📜 Channel: DM with ${wrap(channel.recipient?.tag, colors.LIGHT_PURPLE)} (${wrap(channel.id, colors.GRAY)})`;
     }
+}
+
+export function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild): string {
+    if(guild instanceof BaseGuild) {
+        return `🛡️ Guild: ${wrap(guild.name, colors.PURPLE)} (${wrap(guild.id, colors.GRAY)})`;
+    }
+    return `🛡️ Guild: ${wrap(guild[1], colors.LIGHT_YELLOW)} (${wrap(guild[0], colors.GRAY)})`;
+}
+
+export function userToString(user: User) {
+    return `👤 User: ${wrap(user.tag, colors.LIGHT_RED)} (${wrap(user.id, colors.GRAY)})`;
 }
 
 export async function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void> {
     if (channel) {
 
-        log(`channel ${wrap(getChannelName(channel), colors.GREEN)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
+        log(`${channelToString(channel)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
 
         if (content instanceof EmbedBuilder) {
             await channel.send({
@@ -224,7 +235,7 @@ export async function sendToChannel(channel: TextBasedChannel | null, content: M
 }
 
 export async function messageReply(message: Message, content: string): Promise<void> {
-    info(`channel ${wrap(getChannelName(message.channel), colors.PURPLE)}: (reply to ${message.content}) -> ${content}`);
+    info(`${channelToString(message.channel)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
 
@@ -237,7 +248,7 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
 
-            info(`channel ${wrap(getChannelName(channel), colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
+            info(`${channelToString(channel)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
 
             if (content instanceof EmbedBuilder) {
                 if (interaction.deferred) {
@@ -322,8 +333,6 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
             urls.push(attachement_url);
         }
     }
-    
-
     return urls;
 }
 

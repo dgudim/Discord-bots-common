@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.getChannelName = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
+exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const hash_wasm_1 = require("hash-wasm");
@@ -198,18 +198,29 @@ function messageContentToString(content) {
         return payloadToString(content);
     }
 }
-function getChannelName(channel) {
+function channelToString(channel) {
     if ('guild' in channel) {
-        return channel.guild?.channels.cache.get(channel.id)?.name || "private " + channel;
+        return `Channel: ${(0, colors_1.wrap)(channel.name || "private " + channel, colors_1.colors.GREEN)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
     }
     else {
-        return `DM with ${channel.recipient?.tag}`;
+        return `📜 Channel: DM with ${(0, colors_1.wrap)(channel.recipient?.tag, colors_1.colors.LIGHT_PURPLE)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
     }
 }
-exports.getChannelName = getChannelName;
+exports.channelToString = channelToString;
+function guildToString(guild) {
+    if (guild instanceof discord_js_1.BaseGuild) {
+        return `🛡️ Guild: ${(0, colors_1.wrap)(guild.name, colors_1.colors.PURPLE)} (${(0, colors_1.wrap)(guild.id, colors_1.colors.GRAY)})`;
+    }
+    return `🛡️ Guild: ${(0, colors_1.wrap)(guild[1], colors_1.colors.LIGHT_YELLOW)} (${(0, colors_1.wrap)(guild[0], colors_1.colors.GRAY)})`;
+}
+exports.guildToString = guildToString;
+function userToString(user) {
+    return `👤 User: ${(0, colors_1.wrap)(user.tag, colors_1.colors.LIGHT_RED)} (${(0, colors_1.wrap)(user.id, colors_1.colors.GRAY)})`;
+}
+exports.userToString = userToString;
 async function sendToChannel(channel, content, log_asError) {
     if (channel) {
-        (0, logger_1.log)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.GREEN)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
+        (0, logger_1.log)(`${channelToString(channel)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
         if (content instanceof discord_js_1.EmbedBuilder) {
             await channel.send({
                 embeds: [content]
@@ -242,7 +253,7 @@ async function sendToChannel(channel, content, log_asError) {
 }
 exports.sendToChannel = sendToChannel;
 async function messageReply(message, content) {
-    (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(message.channel), colors_1.colors.PURPLE)}: (reply to ${message.content}) -> ${content}`);
+    (0, logger_1.info)(`${channelToString(message.channel)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
 exports.messageReply = messageReply;
@@ -254,7 +265,7 @@ async function safeReply(interaction, content, ephemeral = false) {
         const channel = interaction.channel;
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
-            (0, logger_1.info)(`channel ${(0, colors_1.wrap)(getChannelName(channel), colors_1.colors.LIGHTER_BLUE)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
+            (0, logger_1.info)(`${channelToString(channel)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
             if (content instanceof discord_js_1.EmbedBuilder) {
                 if (interaction.deferred) {
                     await interaction.editReply({

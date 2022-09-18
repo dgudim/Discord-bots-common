@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, InteractionReplyOptions } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, InteractionReplyOptions, Snowflake, OAuth2Guild, BaseGuild, User } from "discord.js";
 import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
 declare type nullableString = string | undefined | null;
@@ -25,7 +25,9 @@ export declare function limitLength(str: string, max_length: number): string;
 export declare function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number];
 export declare function perc2color(perc: number): ColorResolvable;
 declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions | InteractionReplyOptions;
-export declare function getChannelName(channel: TextBasedChannel): string;
+export declare function channelToString(channel: TextBasedChannel): string;
+export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild): string;
+export declare function userToString(user: User): string;
 export declare function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;
 export declare function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral?: boolean): Promise<void>;
