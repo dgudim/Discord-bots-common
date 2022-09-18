@@ -182,9 +182,10 @@ function messageContentToString(content: MessageContents) {
     }
 }
 
-export function channelToString(channel: TextBasedChannel) {
+export function channelToString(channel: TextBasedChannel, parse_guild?: boolean) {
     if('guild' in channel) {
-        return `Channel: ${wrap(channel.name || "private " + channel, colors.GREEN)} (${wrap(channel.id, colors.GRAY)})`;
+        const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
+        return `${guild_str}Channel: ${wrap(channel.name || "private " + channel, colors.GREEN)} (${wrap(channel.id, colors.GRAY)})`;
     } else {
         return `📜 Channel: DM with ${wrap(channel.recipient?.tag, colors.LIGHT_PURPLE)} (${wrap(channel.id, colors.GRAY)})`;
     }
@@ -207,7 +208,7 @@ export function userToString(user: User) {
 export async function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void> {
     if (channel) {
 
-        log(`${channelToString(channel)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
+        log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
 
         if (content instanceof EmbedBuilder) {
             await channel.send({
@@ -238,7 +239,7 @@ export async function sendToChannel(channel: TextBasedChannel | null, content: M
 }
 
 export async function messageReply(message: Message, content: string): Promise<void> {
-    info(`${channelToString(message.channel)}: (reply to ${message.content}) -> ${content}`);
+    info(`${channelToString(message.channel, true)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
 
@@ -251,7 +252,7 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
 
-            info(`${channelToString(channel)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
+            info(`${channelToString(channel, true)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
 
             if (content instanceof EmbedBuilder) {
                 if (interaction.deferred) {

@@ -198,9 +198,10 @@ function messageContentToString(content) {
         return payloadToString(content);
     }
 }
-function channelToString(channel) {
+function channelToString(channel, parse_guild) {
     if ('guild' in channel) {
-        return `Channel: ${(0, colors_1.wrap)(channel.name || "private " + channel, colors_1.colors.GREEN)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
+        const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
+        return `${guild_str}Channel: ${(0, colors_1.wrap)(channel.name || "private " + channel, colors_1.colors.GREEN)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
     }
     else {
         return `📜 Channel: DM with ${(0, colors_1.wrap)(channel.recipient?.tag, colors_1.colors.LIGHT_PURPLE)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
@@ -223,7 +224,7 @@ function userToString(user) {
 exports.userToString = userToString;
 async function sendToChannel(channel, content, log_asError) {
     if (channel) {
-        (0, logger_1.log)(`${channelToString(channel)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
+        (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
         if (content instanceof discord_js_1.EmbedBuilder) {
             await channel.send({
                 embeds: [content]
@@ -256,7 +257,7 @@ async function sendToChannel(channel, content, log_asError) {
 }
 exports.sendToChannel = sendToChannel;
 async function messageReply(message, content) {
-    (0, logger_1.info)(`${channelToString(message.channel)}: (reply to ${message.content}) -> ${content}`);
+    (0, logger_1.info)(`${channelToString(message.channel, true)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
 exports.messageReply = messageReply;
@@ -268,7 +269,7 @@ async function safeReply(interaction, content, ephemeral = false) {
         const channel = interaction.channel;
         if (channel) {
             const deffered_str = interaction.deferred ? "edited reply" : "reply";
-            (0, logger_1.info)(`${channelToString(channel)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
+            (0, logger_1.info)(`${channelToString(channel, true)}: (${deffered_str} to /${interaction.command?.name}) -> ${messageContentToString(content)}`);
             if (content instanceof discord_js_1.EmbedBuilder) {
                 if (interaction.deferred) {
                     await interaction.editReply({
