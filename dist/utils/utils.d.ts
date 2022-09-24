@@ -25,6 +25,7 @@ export declare function limitLength(str: string, max_length: number): string;
 export declare function hsvToRgb(h: number, s: number, v: number): [red: number, green: number, blue: number];
 export declare function perc2color(perc: number): ColorResolvable;
 declare type MessageContents = string | EmbedBuilder | MessagePayload | MessagePayloadOption;
+export declare function messageContentToString(content: MessageContents): string;
 export declare function channelToString(channel: TextBasedChannel, parse_guild?: boolean): string;
 export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string;
 export declare function userToString(user: User): string;

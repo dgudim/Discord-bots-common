@@ -171,7 +171,7 @@ function payloadToString(payload: MessagePayloadOption) {
 
 type MessageContents = string | EmbedBuilder | MessagePayload | MessagePayloadOption;
 
-function messageContentToString(content: MessageContents) {
+export function messageContentToString(content: MessageContents) {
     if (content instanceof EmbedBuilder) {
         return embedToString(content.data);
     } else if (content instanceof MessagePayload) {
