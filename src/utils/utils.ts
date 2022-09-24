@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, BaseMessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, InteractionReplyOptions, Attachment, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption, MessageCreateOptions, WebhookEditMessageOptions } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, Attachment, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption } from "discord.js";
 import * as fs from "fs";
 
 import { DataError, JsonDB } from "node-json-db";

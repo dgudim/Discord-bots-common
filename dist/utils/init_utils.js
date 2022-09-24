@@ -5,8 +5,8 @@ const dkrcommands_1 = require("dkrcommands");
 const path = require("path");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
-function testEnvironmentVar(variable, var_name, exit) {
-    if (!variable) {
+function testEnvironmentVar(var_name, exit) {
+    if (!process.env.var_name) {
         if (exit) {
             (0, logger_1.error)(`${(0, colors_1.wrap)(var_name, colors_1.colors.LIGHTER_BLUE)} environment variable is not set, can't proceed`);
             process.exit(1);
