@@ -133,7 +133,7 @@ exports.perc2color = perc2color;
 function embedToString(embed) {
     let str = "\n----------------------------------------------------------\n";
     if ('author' in embed || 'title' in embed || 'description' in embed) {
-        str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
+        str += `author: ${embed.author} | title: ${embed.title} | description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
         }
@@ -185,12 +185,6 @@ function payloadToString(payload) {
             }
         }
     }
-    if (payload.attachments) {
-        str += "\nattachments";
-        for (const attachment of payload.attachments) {
-            str += `\n${attachment.toJSON()}`;
-        }
-    }
     return str;
 }
 function messageContentToString(content) {
@@ -204,6 +198,7 @@ function messageContentToString(content) {
         return content;
     }
     else {
+        // message payload option
         return payloadToString(content);
     }
 }
@@ -252,12 +247,12 @@ async function sendToChannel(channel, content, log_asError) {
             await channel.send(content);
         }
         else {
-            // MessageOptions, InteractionReplyOptions
+            // MessagePayloadOption
             await channel.send({
                 embeds: content.embeds,
                 files: content.files,
-                attachments: content.attachments,
-                content: content.content,
+                options: content,
+                content: content.content || "",
                 components: content.components,
                 allowedMentions: content.allowedMentions
             });
@@ -314,12 +309,12 @@ async function safeReply(interaction, content, ephemeral = false) {
                 }
             }
             else {
-                // InteractionReplyOptions and MessageOptions
+                // MessagePayloadOption
                 if (interaction.deferred) {
                     await interaction.editReply({
                         embeds: content.embeds,
                         files: content.files,
-                        attachments: content.attachments,
+                        options: content,
                         content: content.content,
                         components: content.components,
                         allowedMentions: content.allowedMentions
@@ -329,8 +324,8 @@ async function safeReply(interaction, content, ephemeral = false) {
                     await interaction.reply({
                         embeds: content.embeds,
                         files: content.files,
-                        attachments: content.attachments,
-                        content: content.content,
+                        options: content,
+                        content: content.content || "",
                         components: content.components,
                         allowedMentions: content.allowedMentions,
                         ephemeral: ephemeral,
