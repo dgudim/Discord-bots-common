@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, InteractionReplyOptions, Attachment, Snowflake, OAuth2Guild, BaseGuild, User } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, BaseMessageOptions, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, InteractionReplyOptions, Attachment, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption, MessageCreateOptions, WebhookEditMessageOptions } from "discord.js";
 import * as fs from "fs";
 
 import { DataError, JsonDB } from "node-json-db";
@@ -116,7 +116,7 @@ function embedToString(embed: APIEmbed) {
     let str = "\n----------------------------------------------------------\n";
 
     if ('author' in embed || 'title' in embed || 'description' in embed) {
-        str += `author: ${embed.author} title: ${embed.title} description: ${embed.description}`;
+        str += `author: ${embed.author} | title: ${embed.title} | description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
         }
@@ -129,7 +129,7 @@ function embedToString(embed: APIEmbed) {
     return str;
 }
 
-function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
+function payloadToString(payload: MessagePayloadOption) {
     let str = payload.content || "";
     if (payload.files) {
         str += "\nfiles";
@@ -166,16 +166,10 @@ function payloadToString(payload: MessageOptions | InteractionReplyOptions) {
             }
         }
     }
-    if (payload.attachments) {
-        str += "\nattachments";
-        for (const attachment of payload.attachments) {
-            str += `\n${attachment.toJSON()}`;
-        }
-    }
     return str;
 }
 
-type MessageContents = string | EmbedBuilder | MessagePayload | MessageOptions | InteractionReplyOptions;
+type MessageContents = string | EmbedBuilder | MessagePayload | MessagePayloadOption;
 
 function messageContentToString(content: MessageContents) {
     if (content instanceof EmbedBuilder) {
@@ -185,6 +179,7 @@ function messageContentToString(content: MessageContents) {
     } else if (typeof content === "string") {
         return content;
     } else {
+        // message payload option
         return payloadToString(content);
     }
 }
@@ -232,12 +227,12 @@ export async function sendToChannel(channel: TextBasedChannel | null, content: M
         } else if (content instanceof MessagePayload) {
             await channel.send(content);
         } else {
-            // MessageOptions, InteractionReplyOptions
+            // MessagePayloadOption
             await channel.send({
                 embeds: content.embeds,
                 files: content.files,
-                attachments: content.attachments,
-                content: content.content,
+                options: content,
+                content: content.content || "",
                 components: content.components,
                 allowedMentions: content.allowedMentions 
             });
@@ -291,12 +286,12 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                     await interaction.reply(content);
                 }
             } else {
-                // InteractionReplyOptions and MessageOptions
+                // MessagePayloadOption
                 if (interaction.deferred) {
                     await interaction.editReply({
                         embeds: content.embeds,
                         files: content.files,
-                        attachments: content.attachments,
+                        options: content,
                         content: content.content,
                         components: content.components,
                         allowedMentions: content.allowedMentions 
@@ -305,8 +300,8 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                     await interaction.reply({
                         embeds: content.embeds,
                         files: content.files,
-                        attachments: content.attachments,
-                        content: content.content,
+                        options: content,
+                        content: content.content || "",
                         components: content.components,
                         allowedMentions: content.allowedMentions,
                         ephemeral: ephemeral,
