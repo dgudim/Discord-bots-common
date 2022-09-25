@@ -7,6 +7,7 @@ const node_json_db_1 = require("node-json-db");
 const hash_wasm_1 = require("hash-wasm");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
+const stream_1 = require("stream");
 exports.eight_mb = 1024 * 1024 * 8;
 function isDirectory(path) {
     return fs.existsSync(path) && fs.statSync(path).isDirectory();
@@ -153,7 +154,7 @@ function payloadToString(payload) {
                 str += `\n${file}`;
             }
             else if ('attachment' in file) {
-                // AttachmentBuilder, AttachmentPayload and AttachmentBuilder
+                // Attachment, AttachmentPayload and AttachmentBuilder
                 let attachment = "stream";
                 if (file.attachment instanceof Buffer) {
                     attachment = `buffer(${file.attachment.byteLength}`;
@@ -164,13 +165,14 @@ function payloadToString(payload) {
                 str += `\n${file.name}: ${file.description}, data: ${attachment}`;
             }
             else if (file instanceof Buffer) {
-                str += `\nbuffer(${file.byteLength})`;
+                str += `\nbuffer (${file.byteLength})`;
             }
-            else if (file instanceof discord_js_1.Attachment) {
-                str += `\n ${file.name}: ${file.description}, (url: ${file.url}) (size ${file.size})`;
+            else if (file instanceof stream_1.Stream) {
+                str += `\nstream`;
             }
-            else if ('toJSON' in file) {
-                str += `\n${file.toJSON()}`;
+            else {
+                const raw_file = file.toJSON();
+                str += `\n ${raw_file.filename}: ${raw_file.description}, (url: ${raw_file.url}) (size ${raw_file.size})`;
             }
         }
     }
@@ -181,7 +183,7 @@ function payloadToString(payload) {
                 str += embedToString(embed);
             }
             else {
-                str += `\n json encodable embed: ${embed.toJSON()}`;
+                str += embedToString(embed.toJSON());
             }
         }
     }

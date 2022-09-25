@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, Attachment, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, Attachment, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption, APIAttachment, AttachmentBuilder, AttachmentPayload, BufferResolvable, JSONEncodable } from "discord.js";
 import * as fs from "fs";
 
 import { DataError, JsonDB } from "node-json-db";
@@ -7,6 +7,7 @@ import { blake3 } from "hash-wasm";
 
 import { colors, wrap } from "./colors";
 import { info, log, logLevel } from "./logger";
+import { Stream } from "stream";
 
 export const eight_mb = 1024 * 1024 * 8;
 
@@ -37,7 +38,7 @@ export function trimStringArray(arr: string[]): string[] {
 }
 
 export async function isUrl(url: nullableString): Promise<boolean> {
-    if(!url) {
+    if (!url) {
         return false;
     }
     return (await fetch(url)).ok;
@@ -137,32 +138,33 @@ function payloadToString(payload: MessagePayloadOption) {
             if (typeof file === "string") {
                 str += `\n${file}`;
             } else if ('attachment' in file) {
-                // AttachmentBuilder, AttachmentPayload and AttachmentBuilder
+                // Attachment, AttachmentPayload and AttachmentBuilder
 
                 let attachment = "stream";
                 if (file.attachment instanceof Buffer) {
-                    attachment = `buffer(${ file.attachment.byteLength }`;
+                    attachment = `buffer(${file.attachment.byteLength}`;
                 } else if (typeof file.attachment === "string") {
                     attachment = file.attachment;
                 }
 
                 str += `\n${file.name}: ${file.description}, data: ${attachment}`;
             } else if (file instanceof Buffer) {
-                str += `\nbuffer(${file.byteLength})`;
-            } else if (file instanceof Attachment) {
-                str += `\n ${file.name}: ${file.description}, (url: ${file.url}) (size ${file.size})`;
-            } else if ('toJSON' in file){
-                str += `\n${file.toJSON()}`;
+                str += `\nbuffer (${file.byteLength})`;
+            } else if (file instanceof Stream) {
+                str += `\nstream`;
+            } else {
+                const raw_file = file.toJSON();
+                str += `\n ${raw_file.filename}: ${raw_file.description}, (url: ${raw_file.url}) (size ${raw_file.size})`;
             }
         }
     }
     if (payload.embeds) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
-            if(!('toJSON' in embed)) {
+            if (!('toJSON' in embed)) {
                 str += embedToString(embed);
             } else {
-                str += `\n json encodable embed: ${embed.toJSON()}`
+                str += embedToString(embed.toJSON());
             }
         }
     }
@@ -185,7 +187,7 @@ export function messageContentToString(content: MessageContents) {
 }
 
 export function channelToString(channel: TextBasedChannel, parse_guild?: boolean) {
-    if('guild' in channel) {
+    if ('guild' in channel) {
         const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
         return `${guild_str}Channel: ${wrap(channel.name || "private " + channel, colors.GREEN)} (${wrap(channel.id, colors.GRAY)})`;
     } else {
@@ -194,10 +196,10 @@ export function channelToString(channel: TextBasedChannel, parse_guild?: boolean
 }
 
 export function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string {
-    if(!guild) {
+    if (!guild) {
         return `🛡️ Guild: ${wrap("invalid", colors.RED)}`
     }
-    if(guild instanceof BaseGuild) {
+    if (guild instanceof BaseGuild) {
         return `🛡️ Guild: ${wrap(guild.name, colors.PURPLE)} (${wrap(guild.id, colors.GRAY)})`;
     }
     return `🛡️ Guild: ${wrap(guild[1], colors.LIGHT_YELLOW)} (${wrap(guild[0], colors.GRAY)})`;
@@ -234,7 +236,7 @@ export async function sendToChannel(channel: TextBasedChannel | null, content: M
                 options: content,
                 content: content.content || "",
                 components: content.components,
-                allowedMentions: content.allowedMentions 
+                allowedMentions: content.allowedMentions
             });
         }
     }
@@ -268,7 +270,7 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                     });
                 }
             } else if (typeof content === 'string') {
-                
+
                 if (interaction.deferred) {
                     await interaction.editReply({
                         content: content
@@ -294,7 +296,7 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                         options: content,
                         content: content.content,
                         components: content.components,
-                        allowedMentions: content.allowedMentions 
+                        allowedMentions: content.allowedMentions
                     });
                 } else {
                     await interaction.reply({
