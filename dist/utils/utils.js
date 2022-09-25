@@ -147,7 +147,7 @@ function embedToString(embed) {
 }
 function payloadToString(payload) {
     let str = payload.content || "";
-    if (payload.files) {
+    if (payload.files?.length) {
         str += "\nfiles";
         for (const file of payload.files) {
             if (typeof file === "string") {
@@ -176,7 +176,7 @@ function payloadToString(payload) {
             }
         }
     }
-    if (payload.embeds) {
+    if (payload.embeds?.length) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
             if (!('toJSON' in embed)) {
