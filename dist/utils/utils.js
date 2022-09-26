@@ -134,7 +134,7 @@ exports.perc2color = perc2color;
 function embedToString(embed) {
     let str = "\n----------------------------------------------------------\n";
     if ('author' in embed || 'title' in embed || 'description' in embed) {
-        str += `author: ${embed.author} | title: ${embed.title} | description: ${embed.description}`;
+        str += `author: ${embed.author?.name} | title: ${embed.title} | description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
         }
