@@ -18,3 +18,4 @@ __exportStar(require("./utils/colors"), exports);
 __exportStar(require("./utils/logger"), exports);
 __exportStar(require("./utils/utils"), exports);
 __exportStar(require("./utils/init_utils"), exports);
+__exportStar(require("./utils/guild_utils"), exports);
