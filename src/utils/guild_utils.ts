@@ -5,10 +5,10 @@ import { guildToString } from "./utils";
 
 // get all members from a guild
 export async function getAllMembers(guild: Guild) {
-    let members: GuildMember[] = [];
-    let members_async = await guild.members.fetch();
+    const members: GuildMember[] = [];
+    const members_async = await guild.members.fetch();
 
-    for (let member of members_async) {
+    for (const member of members_async) {
         members.push(await member[1].fetch());
     }
 
@@ -17,10 +17,10 @@ export async function getAllMembers(guild: Guild) {
 
 // get all guild the bot is currently in
 export async function getAllGuilds(client: Client) {
-    let guilds: Guild[] = [];
-    let guilds_async = await client.guilds.fetch();
+    const guilds: Guild[] = [];
+    const guilds_async = await client.guilds.fetch();
 
-    for (let guild of guilds_async) {
+    for (const guild of guilds_async) {
         guilds.push(await guild[1].fetch());
     }
 
@@ -66,7 +66,7 @@ export async function swapRoles(prev_role_name: string, member: GuildMember, new
     new_roles = ([] as Role[]).concat(new_roles);
 
     // find all roles that start with prev_role_name (filter not matched(undefined) values)
-    let previous_roles = member.roles.cache.map(element => element.name.startsWith(prev_role_name) ? element : undefined).filter(element => element);
+    const previous_roles = member.roles.cache.map(element => element.name.startsWith(prev_role_name) ? element : undefined).filter(element => element);
     for (const previous_role of previous_roles) {
         //remove previous role if not present in new_roles
         if (previous_role && !new_roles.includes(previous_role)) {

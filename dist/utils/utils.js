@@ -50,7 +50,7 @@ async function getValueIfExists(db, path) {
     }
     catch (e) {
         if (e instanceof node_json_db_1.DataError) {
-            return '-';
+            return "-";
         }
         throw e;
     }
@@ -133,7 +133,7 @@ function perc2color(perc) {
 exports.perc2color = perc2color;
 function embedToString(embed) {
     let str = "\n----------------------------------------------------------\n";
-    if ('author' in embed || 'title' in embed || 'description' in embed) {
+    if ("author" in embed || "title" in embed || "description" in embed) {
         str += `author: ${embed.author?.name} | title: ${embed.title} | description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
@@ -153,7 +153,7 @@ function payloadToString(payload) {
             if (typeof file === "string") {
                 str += `\n${file}`;
             }
-            else if ('attachment' in file) {
+            else if ("attachment" in file) {
                 // Attachment, AttachmentPayload and AttachmentBuilder
                 let attachment = "stream";
                 if (file.attachment instanceof Buffer) {
@@ -179,7 +179,7 @@ function payloadToString(payload) {
     if (payload.embeds?.length) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
-            if (!('toJSON' in embed)) {
+            if (!("toJSON" in embed)) {
                 str += embedToString(embed);
             }
             else {
@@ -206,7 +206,7 @@ function messageContentToString(content) {
 }
 exports.messageContentToString = messageContentToString;
 function channelToString(channel, parse_guild) {
-    if ('guild' in channel) {
+    if ("guild" in channel) {
         const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
         return `${guild_str}Channel: ${(0, colors_1.wrap)(channel.name || "private " + channel, colors_1.colors.GREEN)} (${(0, colors_1.wrap)(channel.id, colors_1.colors.GRAY)})`;
     }
@@ -290,7 +290,7 @@ async function safeReply(interaction, content, ephemeral = false) {
                     });
                 }
             }
-            else if (typeof content === 'string') {
+            else if (typeof content === "string") {
                 if (interaction.deferred) {
                     await interaction.editReply({
                         content: content
@@ -340,10 +340,10 @@ async function safeReply(interaction, content, ephemeral = false) {
 }
 exports.safeReply = safeReply;
 async function getAllUrlFileAttachements(interaction, url_key, attachement_key, check_if_image) {
-    let arg_url = interaction.options.getString(url_key);
-    let attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
-    let channel = interaction.channel;
-    let urls = [];
+    const arg_url = interaction.options.getString(url_key);
+    const attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
+    const channel = interaction.channel;
+    const urls = [];
     if (await isUrl(arg_url)) {
         urls.push(arg_url);
     }
@@ -352,7 +352,7 @@ async function getAllUrlFileAttachements(interaction, url_key, attachement_key, 
     }
     if (await isUrl(attachement_url)) {
         if (check_if_image) {
-            let res = await fetchUrl(attachement_url);
+            const res = await fetchUrl(attachement_url);
             if (isImageUrlType(res.type)) {
                 urls.push(attachement_url);
             }

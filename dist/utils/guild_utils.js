@@ -7,9 +7,9 @@ const logger_1 = require("./logger");
 const utils_1 = require("./utils");
 // get all members from a guild
 async function getAllMembers(guild) {
-    let members = [];
-    let members_async = await guild.members.fetch();
-    for (let member of members_async) {
+    const members = [];
+    const members_async = await guild.members.fetch();
+    for (const member of members_async) {
         members.push(await member[1].fetch());
     }
     return members;
@@ -17,9 +17,9 @@ async function getAllMembers(guild) {
 exports.getAllMembers = getAllMembers;
 // get all guild the bot is currently in
 async function getAllGuilds(client) {
-    let guilds = [];
-    let guilds_async = await client.guilds.fetch();
-    for (let guild of guilds_async) {
+    const guilds = [];
+    const guilds_async = await client.guilds.fetch();
+    for (const guild of guilds_async) {
         guilds.push(await guild[1].fetch());
     }
     return guilds;
@@ -64,7 +64,7 @@ exports.tryToGetMember = tryToGetMember;
 async function swapRoles(prev_role_name, member, new_roles) {
     new_roles = [].concat(new_roles);
     // find all roles that start with prev_role_name (filter not matched(undefined) values)
-    let previous_roles = member.roles.cache.map(element => element.name.startsWith(prev_role_name) ? element : undefined).filter(element => element);
+    const previous_roles = member.roles.cache.map(element => element.name.startsWith(prev_role_name) ? element : undefined).filter(element => element);
     for (const previous_role of previous_roles) {
         //remove previous role if not present in new_roles
         if (previous_role && !new_roles.includes(previous_role)) {

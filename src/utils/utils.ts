@@ -53,7 +53,7 @@ export async function getValueIfExists(db: JsonDB, path: string) {
         return await db.getData(path);
     } catch (e) {
         if (e instanceof DataError) {
-            return '-';
+            return "-";
         }
         throw e;
     }
@@ -116,13 +116,13 @@ export function perc2color(perc: number): ColorResolvable {
 function embedToString(embed: APIEmbed) {
     let str = "\n----------------------------------------------------------\n";
 
-    if ('author' in embed || 'title' in embed || 'description' in embed) {
+    if ("author" in embed || "title" in embed || "description" in embed) {
         str += `author: ${embed.author?.name} | title: ${embed.title} | description: ${embed.description}`;
         for (const field of embed.fields || []) {
             str += `\n${field.name}: ${field.value}`;
         }
         if (embed.footer) {
-            str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`
+            str += `footer: ${embed.footer.text}, ${embed.footer.icon_url}`;
         }
     }
 
@@ -137,7 +137,7 @@ function payloadToString(payload: MessagePayloadOption) {
         for (const file of payload.files) {
             if (typeof file === "string") {
                 str += `\n${file}`;
-            } else if ('attachment' in file) {
+            } else if ("attachment" in file) {
                 // Attachment, AttachmentPayload and AttachmentBuilder
 
                 let attachment = "stream";
@@ -161,7 +161,7 @@ function payloadToString(payload: MessagePayloadOption) {
     if (payload.embeds?.length) {
         str += "\nembeds:";
         for (const embed of payload.embeds) {
-            if (!('toJSON' in embed)) {
+            if (!("toJSON" in embed)) {
                 str += embedToString(embed);
             } else {
                 str += embedToString(embed.toJSON());
@@ -187,7 +187,7 @@ export function messageContentToString(content: MessageContents) {
 }
 
 export function channelToString(channel: TextBasedChannel, parse_guild?: boolean) {
-    if ('guild' in channel) {
+    if ("guild" in channel) {
         const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
         return `${guild_str}Channel: ${wrap(channel.name || "private " + channel, colors.GREEN)} (${wrap(channel.id, colors.GRAY)})`;
     } else {
@@ -197,7 +197,7 @@ export function channelToString(channel: TextBasedChannel, parse_guild?: boolean
 
 export function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string {
     if (!guild) {
-        return `🛡️ Guild: ${wrap("invalid", colors.RED)}`
+        return `🛡️ Guild: ${wrap("invalid", colors.RED)}`;
     }
     if (guild instanceof BaseGuild) {
         return `🛡️ Guild: ${wrap(guild.name, colors.PURPLE)} (${wrap(guild.id, colors.GRAY)})`;
@@ -269,7 +269,7 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
                         ephemeral: ephemeral
                     });
                 }
-            } else if (typeof content === 'string') {
+            } else if (typeof content === "string") {
 
                 if (interaction.deferred) {
                     await interaction.editReply({
@@ -317,11 +317,11 @@ export async function safeReply(interaction: CommandInteraction, content: Messag
 export async function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction, url_key: string, attachement_key: string, check_if_image?: boolean)
     : Promise<string[]> {
 
-    let arg_url = interaction.options.getString(url_key);
-    let attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
-    let channel = interaction.channel;
+    const arg_url = interaction.options.getString(url_key);
+    const attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
+    const channel = interaction.channel;
 
-    let urls: string[] = [];
+    const urls: string[] = [];
     if (await isUrl(arg_url)) {
         urls.push(arg_url!);
     } else if (arg_url) {
@@ -331,7 +331,7 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
 
     if (await isUrl(attachement_url)) {
         if (check_if_image) {
-            let res = await fetchUrl(attachement_url);
+            const res = await fetchUrl(attachement_url);
             if (isImageUrlType(res.type)) {
                 urls.push(attachement_url);
             } else {

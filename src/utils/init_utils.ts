@@ -17,7 +17,7 @@ export function testEnvironmentVar(var_name: string, exit: boolean) {
 
 export function dkrInit(client: Client, project_root_dir: string) {
     const handler = new DKRCommands(client, {
-        commandsDir: path.join(project_root_dir, 'commands'),
+        commandsDir: path.join(project_root_dir, "commands"),
         typeScript: true,
         botOwners: process.env.OWNERS?.split(","),
         testServers: process.env.TEST_SERVERS?.split(",")
