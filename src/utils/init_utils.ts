@@ -15,6 +15,10 @@ export function testEnvironmentVar(var_name: string, exit: boolean) {
     }
 }
 
+export function getEnvironmentVar(var_name: string, default_value = "") {
+    return process.env[var_name] || default_value;
+}
+
 export function dkrInit(client: Client, project_root_dir: string) {
     const handler = new DKRCommands(client, {
         commandsDir: path.join(project_root_dir, "commands"),
