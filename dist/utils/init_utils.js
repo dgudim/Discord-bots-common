@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dkrInit = exports.testEnvironmentVar = void 0;
+exports.dkrInit = exports.getEnvironmentVar = exports.testEnvironmentVar = void 0;
 const dkrcommands_1 = require("dkrcommands");
 const path = require("path");
 const colors_1 = require("./colors");
@@ -17,6 +17,10 @@ function testEnvironmentVar(var_name, exit) {
     }
 }
 exports.testEnvironmentVar = testEnvironmentVar;
+function getEnvironmentVar(var_name, default_value = "") {
+    return process.env[var_name] || default_value;
+}
+exports.getEnvironmentVar = getEnvironmentVar;
 function dkrInit(client, project_root_dir) {
     const handler = new dkrcommands_1.DKRCommands(client, {
         commandsDir: path.join(project_root_dir, "commands"),

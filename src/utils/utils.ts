@@ -11,7 +11,8 @@ import { Stream } from "stream";
 
 export const eight_mb = 1024 * 1024 * 8;
 
-type nullableString = string | undefined | null;
+type none = undefined | null;
+type nullableString = string | none;
 
 export function isDirectory(path: string): boolean {
     return fs.existsSync(path) && fs.statSync(path).isDirectory();
@@ -209,36 +210,37 @@ export function userToString(user: User) {
     return `👤 User: ${wrap(user.tag, colors.LIGHT_RED)} (${wrap(user.id, colors.GRAY)})`;
 }
 
-export async function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void> {
-    if (channel) {
+export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents, log_asError?: boolean): Promise<void> {
+    if (!channel) {
+        return info(`can't send to null channel: ${messageContentToString(content)}`);
+    }
 
-        log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
+    log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
 
-        if (content instanceof EmbedBuilder) {
-            await channel.send({
-                embeds: [content]
-            });
-        } else if (typeof content === "string") {
-            const len = content.length;
-            let pos = 0;
-            while (pos < len) {
-                const slice = content.slice(pos, pos + 1999);
-                await channel.send(slice);
-                pos += 1999;
-            }
-        } else if (content instanceof MessagePayload) {
-            await channel.send(content);
-        } else {
-            // MessagePayloadOption
-            await channel.send({
-                embeds: content.embeds,
-                files: content.files,
-                options: content,
-                content: content.content || "",
-                components: content.components,
-                allowedMentions: content.allowedMentions
-            });
+    if (content instanceof EmbedBuilder) {
+        await channel.send({
+            embeds: [content]
+        });
+    } else if (typeof content === "string") {
+        const len = content.length;
+        let pos = 0;
+        while (pos < len) {
+            const slice = content.slice(pos, pos + 1999);
+            await channel.send(slice);
+            pos += 1999;
         }
+    } else if (content instanceof MessagePayload) {
+        await channel.send(content);
+    } else {
+        // MessagePayloadOption
+        await channel.send({
+            embeds: content.embeds,
+            files: content.files,
+            options: content,
+            content: content.content || "",
+            components: content.components,
+            allowedMentions: content.allowedMentions
+        });
     }
 }
 
@@ -248,7 +250,10 @@ export async function messageReply(message: Message, content: string): Promise<v
 }
 
 
-export async function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral = false): Promise<void> {
+export async function safeReply(interaction: CommandInteraction | none, content: MessageContents, ephemeral = false): Promise<void> {
+    if (!interaction) {
+        return info(`can't reply to null interraction with content: ${messageContentToString(content)}`);
+    }
     if (interaction.replied) {
         await sendToChannel(interaction.channel, content);
     } else {

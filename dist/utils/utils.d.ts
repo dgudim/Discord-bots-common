@@ -1,7 +1,8 @@
 import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption } from "discord.js";
 import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
-declare type nullableString = string | undefined | null;
+declare type none = undefined | null;
+declare type nullableString = string | none;
 export declare function isDirectory(path: string): boolean;
 export declare function getFileName(file: string): string;
 export declare function normalize(str: nullableString): string;
@@ -29,9 +30,9 @@ export declare function messageContentToString(content: MessageContents): string
 export declare function channelToString(channel: TextBasedChannel, parse_guild?: boolean): string;
 export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string;
 export declare function userToString(user: User): string;
-export declare function sendToChannel(channel: TextBasedChannel | null, content: MessageContents, log_asError?: boolean): Promise<void>;
+export declare function sendToChannel(channel: TextBasedChannel | none, content: MessageContents, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;
-export declare function safeReply(interaction: CommandInteraction, content: MessageContents, ephemeral?: boolean): Promise<void>;
+export declare function safeReply(interaction: CommandInteraction | none, content: MessageContents, ephemeral?: boolean): Promise<void>;
 export declare function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction, url_key: string, attachement_key: string, check_if_image?: boolean): Promise<string[]>;
 export declare function walk(dir: string): string[];
 export declare function getSimpleEmbed(title: string, description: string, color: ColorResolvable): EmbedBuilder;
