@@ -344,6 +344,10 @@ async function safeReply(interaction, content, ephemeral = false) {
 }
 exports.safeReply = safeReply;
 async function getAllUrlFileAttachements(interaction, url_key, attachement_key, check_if_image) {
+    if (!interaction) {
+        (0, logger_1.info)(`can't get attachements from a null interraction with keys: ${url_key} ${attachement_key}`);
+        return [];
+    }
     const arg_url = interaction.options.getString(url_key);
     const attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
     const channel = interaction.channel;

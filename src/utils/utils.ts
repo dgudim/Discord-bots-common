@@ -11,8 +11,8 @@ import { Stream } from "stream";
 
 export const eight_mb = 1024 * 1024 * 8;
 
-type none = undefined | null;
-type nullableString = string | none;
+export type none = undefined | null;
+export type nullableString = string | none;
 
 export function isDirectory(path: string): boolean {
     return fs.existsSync(path) && fs.statSync(path).isDirectory();
@@ -249,7 +249,6 @@ export async function messageReply(message: Message, content: string): Promise<v
     await message.reply(content);
 }
 
-
 export async function safeReply(interaction: CommandInteraction | none, content: MessageContents, ephemeral = false): Promise<void> {
     if (!interaction) {
         return info(`can't reply to null interraction with content: ${messageContentToString(content)}`);
@@ -319,8 +318,13 @@ export async function safeReply(interaction: CommandInteraction | none, content:
     }
 }
 
-export async function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction, url_key: string, attachement_key: string, check_if_image?: boolean)
+export async function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction | none, url_key: string, attachement_key: string, check_if_image?: boolean)
     : Promise<string[]> {
+
+    if (!interaction) {
+        info(`can't get attachements from a null interraction with keys: ${url_key} ${attachement_key}`);
+        return [];
+    }
 
     const arg_url = interaction.options.getString(url_key);
     const attachement_url = interaction.options.getAttachment(attachement_key)?.url || "";
@@ -332,8 +336,7 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
     } else if (arg_url) {
         await safeReply(interaction, "Invalid Url");
     }
-
-
+    
     if (await isUrl(attachement_url)) {
         if (check_if_image) {
             const res = await fetchUrl(attachement_url);
