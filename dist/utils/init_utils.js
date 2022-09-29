@@ -12,7 +12,7 @@ function testEnvironmentVar(var_name, exit) {
             process.exit(1);
         }
         else {
-            (0, logger_1.warn)(`consider setting ${(0, colors_1.wrap)(var_name, colors_1.colors.LIGHT_YELLOW)} environment variable`);
+            (0, logger_1.warn)(`consider setting ${(0, colors_1.wrap)(var_name, colors_1.colors.BLUE)} environment variable`);
         }
     }
 }

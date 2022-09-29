@@ -10,7 +10,7 @@ export function testEnvironmentVar(var_name: string, exit: boolean) {
             error(`${wrap(var_name, colors.LIGHTER_BLUE)} environment variable is not set, can't proceed`);
             process.exit(1);
         } else {
-            warn(`consider setting ${wrap(var_name, colors.LIGHT_YELLOW)} environment variable`);
+            warn(`consider setting ${wrap(var_name, colors.BLUE)} environment variable`);
         }
     }
 }
