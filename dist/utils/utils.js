@@ -14,7 +14,7 @@ function isDirectory(path) {
 }
 exports.isDirectory = isDirectory;
 function getFileName(file) {
-    return file.substring(file.lastIndexOf("/") + 1);
+    return file.substring(file.lastIndexOf("/") + 1, file.indexOf("?"));
 }
 exports.getFileName = getFileName;
 function normalize(str) {
