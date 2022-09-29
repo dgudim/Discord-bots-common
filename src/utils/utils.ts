@@ -19,7 +19,9 @@ export function isDirectory(path: string): boolean {
 }
 
 export function getFileName(file: string): string {
-    return file.substring(file.lastIndexOf("/") + 1, file.indexOf("?"));
+    const parts = file.split("/");
+    const lastPIndex = file.indexOf("?");
+    return parts[parts.length - 1].substring(0, lastPIndex == -1 ? file.length : lastPIndex);
 }
 
 export function normalize(str: nullableString): string {
