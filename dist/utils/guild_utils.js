@@ -49,10 +49,10 @@ async function createChannelIfNotExists(guild, options, is_category) {
     return channel;
 }
 exports.createChannelIfNotExists = createChannelIfNotExists;
-function deleteChannelIfExists(guild, name) {
+async function deleteChannelIfExists(guild, name) {
     const channel = guild.channels.cache.find(channel => channel.name === name);
     if (channel) {
-        guild.channels.delete(channel);
+        await guild.channels.delete(channel);
         (0, logger_1.info)(`🗑️ Deleted channel: ${(0, colors_1.wrap)(name, colors_1.colors.LIGHTER_BLUE)} in ${(0, utils_1.guildToString)(guild)}`);
     }
 }

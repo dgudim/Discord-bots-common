@@ -51,10 +51,10 @@ export async function createChannelIfNotExists(guild: Guild, options: GuildChann
     return channel;
 }
 
-export function deleteChannelIfExists(guild: Guild, name: string) {
+export async function deleteChannelIfExists(guild: Guild, name: string) {
     const channel = guild.channels.cache.find(channel => channel.name === name);
     if (channel) {
-        guild.channels.delete(channel);
+        await guild.channels.delete(channel);
         info(`🗑️ Deleted channel: ${wrap(name, colors.LIGHTER_BLUE)} in ${guildToString(guild)}`);
     }
 }
