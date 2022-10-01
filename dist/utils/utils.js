@@ -236,33 +236,38 @@ async function sendToChannel(channel, content, log_asError) {
         return (0, logger_1.info)(`can't send to null channel: ${messageContentToString(content)}`);
     }
     (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
-    if (content instanceof discord_js_1.EmbedBuilder) {
-        await channel.send({
-            embeds: [content]
-        });
-    }
-    else if (typeof content === "string") {
-        const len = content.length;
-        let pos = 0;
-        while (pos < len) {
-            const slice = content.slice(pos, pos + 1999);
-            await channel.send(slice);
-            pos += 1999;
+    try {
+        if (content instanceof discord_js_1.EmbedBuilder) {
+            await channel.send({
+                embeds: [content]
+            });
+        }
+        else if (typeof content === "string") {
+            const len = content.length;
+            let pos = 0;
+            while (pos < len) {
+                const slice = content.slice(pos, pos + 1999);
+                await channel.send(slice);
+                pos += 1999;
+            }
+        }
+        else if (content instanceof discord_js_1.MessagePayload) {
+            await channel.send(content);
+        }
+        else {
+            // MessagePayloadOption
+            await channel.send({
+                embeds: content.embeds,
+                files: content.files,
+                options: content,
+                content: content.content || "",
+                components: content.components,
+                allowedMentions: content.allowedMentions
+            });
         }
     }
-    else if (content instanceof discord_js_1.MessagePayload) {
-        await channel.send(content);
-    }
-    else {
-        // MessagePayloadOption
-        await channel.send({
-            embeds: content.embeds,
-            files: content.files,
-            options: content,
-            content: content.content || "",
-            components: content.components,
-            allowedMentions: content.allowedMentions
-        });
+    catch (err) {
+        (0, logger_1.error)(`Error sending to ${channelToString(channel, true)}, missing permissions?`);
     }
 }
 exports.sendToChannel = sendToChannel;

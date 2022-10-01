@@ -6,7 +6,7 @@ import { DataError, JsonDB } from "node-json-db";
 import { blake3 } from "hash-wasm";
 
 import { colors, wrap } from "./colors";
-import { info, log, logLevel } from "./logger";
+import { error, info, log, logLevel } from "./logger";
 import { Stream } from "stream";
 
 export const eight_mb = 1024 * 1024 * 8;
@@ -219,30 +219,34 @@ export async function sendToChannel(channel: TextBasedChannel | none, content: M
 
     log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
 
-    if (content instanceof EmbedBuilder) {
-        await channel.send({
-            embeds: [content]
-        });
-    } else if (typeof content === "string") {
-        const len = content.length;
-        let pos = 0;
-        while (pos < len) {
-            const slice = content.slice(pos, pos + 1999);
-            await channel.send(slice);
-            pos += 1999;
+    try {
+        if (content instanceof EmbedBuilder) {
+            await channel.send({
+                embeds: [content]
+            });
+        } else if (typeof content === "string") {
+            const len = content.length;
+            let pos = 0;
+            while (pos < len) {
+                const slice = content.slice(pos, pos + 1999);
+                await channel.send(slice);
+                pos += 1999;
+            }
+        } else if (content instanceof MessagePayload) {
+            await channel.send(content);
+        } else {
+            // MessagePayloadOption
+            await channel.send({
+                embeds: content.embeds,
+                files: content.files,
+                options: content,
+                content: content.content || "",
+                components: content.components,
+                allowedMentions: content.allowedMentions
+            });
         }
-    } else if (content instanceof MessagePayload) {
-        await channel.send(content);
-    } else {
-        // MessagePayloadOption
-        await channel.send({
-            embeds: content.embeds,
-            files: content.files,
-            options: content,
-            content: content.content || "",
-            components: content.components,
-            allowedMentions: content.allowedMentions
-        });
+    } catch (err) {
+        error(`Error sending to ${channelToString(channel, true) }, missing permissions?`);
     }
 }
 
