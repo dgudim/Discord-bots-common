@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.swapRoles = exports.tryToGetMember = exports.createChannelIfNotExists = exports.createRoleIfNotExists = exports.getAllGuilds = exports.getAllMembers = void 0;
+exports.swapRoles = exports.tryToGetMember = exports.deleteChannelIfExists = exports.createChannelIfNotExists = exports.createRoleIfNotExists = exports.getAllGuilds = exports.getAllMembers = void 0;
 const discord_js_1 = require("discord.js");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
@@ -49,6 +49,14 @@ async function createChannelIfNotExists(guild, options, is_category) {
     return channel;
 }
 exports.createChannelIfNotExists = createChannelIfNotExists;
+function deleteChannelIfExists(guild, name) {
+    const channel = guild.channels.cache.find(channel => channel.name === name);
+    if (channel) {
+        guild.channels.delete(channel);
+        (0, logger_1.info)(`🗑️ Deleted channel: ${(0, colors_1.wrap)(name, colors_1.colors.LIGHTER_BLUE)} in ${(0, utils_1.guildToString)(guild)}`);
+    }
+}
+exports.deleteChannelIfExists = deleteChannelIfExists;
 // try tu get a member from a guild by id, return undefined if it doesn't exist
 async function tryToGetMember(guild, memberId) {
     try {
