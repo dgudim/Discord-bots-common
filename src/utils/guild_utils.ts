@@ -46,7 +46,7 @@ export async function createChannelIfNotExists(guild: Guild, options: GuildChann
         && (channel.type == ChannelType.GuildCategory || !is_category));
     if (!channel) {
         channel = await guild.channels.create(options);
-        info(`🔨 Created ${is_category ? "category" : "channel"} channel: ${wrap(options.name, colors.LIGHTER_BLUE)} in ${guildToString(guild)}`);
+        info(`🔨 Created ${is_category ? "category" : "text"} channel: ${wrap(options.name, colors.LIGHTER_BLUE)} in ${guildToString(guild)}`);
     }
     return channel;
 }

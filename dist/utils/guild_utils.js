@@ -44,7 +44,7 @@ async function createChannelIfNotExists(guild, options, is_category) {
         && (channel.type == discord_js_1.ChannelType.GuildCategory || !is_category));
     if (!channel) {
         channel = await guild.channels.create(options);
-        (0, logger_1.info)(`🔨 Created ${is_category ? "category" : "channel"} channel: ${(0, colors_1.wrap)(options.name, colors_1.colors.LIGHTER_BLUE)} in ${(0, utils_1.guildToString)(guild)}`);
+        (0, logger_1.info)(`🔨 Created ${is_category ? "category" : "text"} channel: ${(0, colors_1.wrap)(options.name, colors_1.colors.LIGHTER_BLUE)} in ${(0, utils_1.guildToString)(guild)}`);
     }
     return channel;
 }
