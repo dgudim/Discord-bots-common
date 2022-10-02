@@ -40,6 +40,15 @@ export async function createRoleIfNotExists(guild: Guild, name: string, color: C
     return role;
 }
 
+// delete a role in a guild if it exists
+export async function deleteRoleIfNotExists(guild: Guild, name: string) {
+    const role = guild.roles.cache.find(role => role.name === name);
+    if (role) {
+        await guild.roles.delete(role);
+        info(`🗑️ Deleted role: ${wrap(name, colors.LIGHTER_BLUE)} in ${guildToString(guild)}`);
+    }
+}
+
 // create channel or a channel category in a guild if it doesn't exist
 export async function createChannelIfNotExists(guild: Guild, options: GuildChannelCreateOptions, is_category?: boolean) {
     let channel = guild.channels.cache.find(channel => channel.name === options.name
@@ -51,6 +60,7 @@ export async function createChannelIfNotExists(guild: Guild, options: GuildChann
     return channel;
 }
 
+// delete channel or a channel category in a guild if it exists
 export async function deleteChannelIfExists(guild: Guild, name: string) {
     const channel = guild.channels.cache.find(channel => channel.name === name);
     if (channel) {

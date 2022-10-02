@@ -3,7 +3,8 @@ import { JsonDB } from "node-json-db";
 export declare const eight_mb: number;
 export declare type none = undefined | null;
 export declare type nullableString = string | none;
-export declare function isDirectory(path: string): boolean;
+export declare function isDirectory(path: string | none): boolean;
+export declare function isFile(path: string | none): boolean;
 export declare function getFileName(file: string): string;
 export declare function normalize(str: nullableString): string;
 export declare function getBaseLog(x: number, y: number): number;
@@ -37,6 +38,7 @@ export declare function getAllUrlFileAttachements(interaction: ChatInputCommandI
 export declare function walk(dir: string): string[];
 export declare function getSimpleEmbed(title: string, description: string, color: ColorResolvable): EmbedBuilder;
 export declare function getDateTime(): string;
+export declare function secondsToDhms(seconds: number): string;
 export declare function clamp(num: number, min: number, max: number): number;
 export declare function sleep(ms: number): Promise<unknown>;
 export declare function normalizeTags(tags: string): string;

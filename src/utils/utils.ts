@@ -14,8 +14,12 @@ export const eight_mb = 1024 * 1024 * 8;
 export type none = undefined | null;
 export type nullableString = string | none;
 
-export function isDirectory(path: string): boolean {
-    return fs.existsSync(path) && fs.statSync(path).isDirectory();
+export function isDirectory(path: string | none): boolean {
+    return path ? (fs.existsSync(path) && fs.statSync(path).isDirectory()) : false;
+}
+
+export function isFile(path: string | none): boolean {
+    return path ? (fs.existsSync(path) && fs.statSync(path).isFile()) : false;
 }
 
 export function getFileName(file: string): string {
@@ -389,6 +393,20 @@ export function getDateTime() {
     const time = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
     return date + " " + time;
 }
+
+export function secondsToDhms(seconds: number) {
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor(seconds % (3600 * 24) / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 60);
+
+    const dDisplay = d > 0 ? (d + "d") : "";
+    const hDisplay = h > 0 ? (h + "h") : "";
+    const mDisplay = m > 0 ? (m + "m") : "";
+    const sDisplay = s > 0 ? (s + "s") : "";
+    return dDisplay + hDisplay + mDisplay + sDisplay;
+}
+
 
 export function clamp(num: number, min: number, max: number): number {
     return Math.min(Math.max(num, min), max);

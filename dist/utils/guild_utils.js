@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.swapRoles = exports.tryToGetMember = exports.deleteChannelIfExists = exports.createChannelIfNotExists = exports.createRoleIfNotExists = exports.getAllGuilds = exports.getAllMembers = void 0;
+exports.swapRoles = exports.tryToGetMember = exports.deleteChannelIfExists = exports.createChannelIfNotExists = exports.deleteRoleIfNotExists = exports.createRoleIfNotExists = exports.getAllGuilds = exports.getAllMembers = void 0;
 const discord_js_1 = require("discord.js");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
@@ -38,6 +38,15 @@ async function createRoleIfNotExists(guild, name, color) {
     return role;
 }
 exports.createRoleIfNotExists = createRoleIfNotExists;
+// delete a role in a guild if it exists
+async function deleteRoleIfNotExists(guild, name) {
+    const role = guild.roles.cache.find(role => role.name === name);
+    if (role) {
+        await guild.roles.delete(role);
+        (0, logger_1.info)(`🗑️ Deleted role: ${(0, colors_1.wrap)(name, colors_1.colors.LIGHTER_BLUE)} in ${(0, utils_1.guildToString)(guild)}`);
+    }
+}
+exports.deleteRoleIfNotExists = deleteRoleIfNotExists;
 // create channel or a channel category in a guild if it doesn't exist
 async function createChannelIfNotExists(guild, options, is_category) {
     let channel = guild.channels.cache.find(channel => channel.name === options.name
@@ -49,6 +58,7 @@ async function createChannelIfNotExists(guild, options, is_category) {
     return channel;
 }
 exports.createChannelIfNotExists = createChannelIfNotExists;
+// delete channel or a channel category in a guild if it exists
 async function deleteChannelIfExists(guild, name) {
     const channel = guild.channels.cache.find(channel => channel.name === name);
     if (channel) {

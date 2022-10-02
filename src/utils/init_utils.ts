@@ -3,14 +3,22 @@ import { DKRCommands } from "dkrcommands";
 import path = require("path");
 import { colors, wrap } from "./colors";
 import { error, info, warn } from "./logger";
+import { isFile } from "./utils";
 
-export function testEnvironmentVar(var_name: string, exit: boolean) {
+export function testEnvironmentVar(var_name: string, exit: boolean, is_file?: boolean) {
     if (!process.env[var_name]) {
         if (exit) {
             error(`${wrap(var_name, colors.LIGHTER_BLUE)} environment variable is not set, can't proceed`);
             process.exit(1);
         } else {
             warn(`consider setting ${wrap(var_name, colors.BLUE)} environment variable`);
+        }
+    } else if (is_file && !isFile(process.env[var_name])) {
+        if (exit) {
+            error(`${wrap(var_name, colors.LIGHTER_BLUE)} does not point to a file, can't proceed`);
+            process.exit(1);
+        } else {
+            warn(`consider pointing ${wrap(var_name, colors.BLUE)} to file`);
         }
     }
 }

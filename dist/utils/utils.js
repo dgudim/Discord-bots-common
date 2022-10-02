@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isDirectory = exports.eight_mb = void 0;
+exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const node_json_db_1 = require("node-json-db");
@@ -10,9 +10,13 @@ const logger_1 = require("./logger");
 const stream_1 = require("stream");
 exports.eight_mb = 1024 * 1024 * 8;
 function isDirectory(path) {
-    return fs.existsSync(path) && fs.statSync(path).isDirectory();
+    return path ? (fs.existsSync(path) && fs.statSync(path).isDirectory()) : false;
 }
 exports.isDirectory = isDirectory;
+function isFile(path) {
+    return path ? (fs.existsSync(path) && fs.statSync(path).isFile()) : false;
+}
+exports.isFile = isFile;
 function getFileName(file) {
     const parts = file.split("/");
     const lastPIndex = file.indexOf("?");
@@ -415,6 +419,18 @@ function getDateTime() {
     return date + " " + time;
 }
 exports.getDateTime = getDateTime;
+function secondsToDhms(seconds) {
+    const d = Math.floor(seconds / (3600 * 24));
+    const h = Math.floor(seconds % (3600 * 24) / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 60);
+    const dDisplay = d > 0 ? (d + "d") : "";
+    const hDisplay = h > 0 ? (h + "h") : "";
+    const mDisplay = m > 0 ? (m + "m") : "";
+    const sDisplay = s > 0 ? (s + "s") : "";
+    return dDisplay + hDisplay + mDisplay + sDisplay;
+}
+exports.secondsToDhms = secondsToDhms;
 function clamp(num, min, max) {
     return Math.min(Math.max(num, min), max);
 }

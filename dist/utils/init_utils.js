@@ -5,7 +5,8 @@ const dkrcommands_1 = require("dkrcommands");
 const path = require("path");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
-function testEnvironmentVar(var_name, exit) {
+const utils_1 = require("./utils");
+function testEnvironmentVar(var_name, exit, is_file) {
     if (!process.env[var_name]) {
         if (exit) {
             (0, logger_1.error)(`${(0, colors_1.wrap)(var_name, colors_1.colors.LIGHTER_BLUE)} environment variable is not set, can't proceed`);
@@ -13,6 +14,15 @@ function testEnvironmentVar(var_name, exit) {
         }
         else {
             (0, logger_1.warn)(`consider setting ${(0, colors_1.wrap)(var_name, colors_1.colors.BLUE)} environment variable`);
+        }
+    }
+    else if (is_file && !(0, utils_1.isFile)(process.env[var_name])) {
+        if (exit) {
+            (0, logger_1.error)(`${(0, colors_1.wrap)(var_name, colors_1.colors.LIGHTER_BLUE)} does not point to a file, can't proceed`);
+            process.exit(1);
+        }
+        else {
+            (0, logger_1.warn)(`consider pointing ${(0, colors_1.wrap)(var_name, colors_1.colors.BLUE)} to file`);
         }
     }
 }
