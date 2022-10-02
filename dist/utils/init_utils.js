@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dkrInit = exports.getEnvironmentVar = exports.testEnvironmentVar = void 0;
+exports.getClient = exports.dkrInit = exports.getEnvironmentVar = exports.testEnvironmentVar = void 0;
+const discord_js_1 = require("discord.js");
 const dkrcommands_1 = require("dkrcommands");
 const path = require("path");
 const colors_1 = require("./colors");
@@ -42,3 +43,15 @@ function dkrInit(client, project_root_dir) {
     return handler;
 }
 exports.dkrInit = dkrInit;
+function getClient(intents) {
+    return new discord_js_1.Client({
+        intents: intents || [
+            discord_js_1.GatewayIntentBits.Guilds,
+            discord_js_1.GatewayIntentBits.GuildMembers,
+            discord_js_1.GatewayIntentBits.GuildMessages,
+            discord_js_1.GatewayIntentBits.GuildMessageReactions,
+            discord_js_1.GatewayIntentBits.MessageContent
+        ]
+    });
+}
+exports.getClient = getClient;

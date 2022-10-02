@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import { BitFieldResolvable, Client, GatewayIntentBits, GatewayIntentsString } from "discord.js";
 import { DKRCommands } from "dkrcommands";
 import path = require("path");
 import { colors, wrap } from "./colors";
@@ -37,4 +37,16 @@ export function dkrInit(client: Client, project_root_dir: string) {
 
     info(`${wrap("💁 Client ready", colors.LIGHT_YELLOW)}`);
     return handler;
+}
+
+export function getClient(intents?: BitFieldResolvable<GatewayIntentsString, number>) {
+    return new Client({
+        intents: intents || [
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMembers,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.GuildMessageReactions,
+            GatewayIntentBits.MessageContent
+        ]
+    });
 }
