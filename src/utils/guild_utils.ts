@@ -1,7 +1,7 @@
 import { Guild, GuildMember, Client, ColorResolvable, GuildChannelCreateOptions, ChannelType, Snowflake, Role } from "discord.js";
 import { wrap, colors } from "./colors";
 import { error, info } from "./logger";
-import { guildToString, userToString } from "./utils";
+import { guildToString, none, userToString } from "./utils";
 
 // get all members from a guild
 export async function getAllMembers(guild: Guild) {
@@ -100,7 +100,12 @@ export async function tryToGetMember(guild: Guild, memberId: Snowflake) {
 }
 
 // utility function to update user's roles, e.g. rank roles or clan roles
-export async function swapRoles(prev_role_name: string, member: GuildMember, new_roles: Role | Role[]) {
+export async function swapRoles(prev_role_name: string, member: GuildMember, new_roles: Role | Role[] | none) {
+
+    if (!new_roles) {
+        return error(`❌ Can't swap undefined roles`);
+    }
+
     new_roles = ([] as Role[]).concat(new_roles);
 
     try {

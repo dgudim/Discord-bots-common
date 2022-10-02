@@ -104,6 +104,9 @@ async function tryToGetMember(guild, memberId) {
 exports.tryToGetMember = tryToGetMember;
 // utility function to update user's roles, e.g. rank roles or clan roles
 async function swapRoles(prev_role_name, member, new_roles) {
+    if (!new_roles) {
+        return (0, logger_1.error)(`❌ Can't swap undefined roles`);
+    }
     new_roles = [].concat(new_roles);
     try {
         // find all roles that start with prev_role_name (filter not matched(undefined) values)
