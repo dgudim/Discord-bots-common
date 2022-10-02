@@ -218,7 +218,7 @@ export function userToString(user: User) {
 
 export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents, log_asError?: boolean): Promise<void> {
     if (!channel) {
-        return info(`can't send to null channel: ${messageContentToString(content)}`);
+        return error(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
 
     log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
@@ -250,7 +250,7 @@ export async function sendToChannel(channel: TextBasedChannel | none, content: M
             });
         }
     } catch (err) {
-        error(`Error sending to ${channelToString(channel, true) }, missing permissions?`);
+        error(`❌ Error sending to ${channelToString(channel, true) }, missing permissions? | error: ${err}`);
     }
 }
 

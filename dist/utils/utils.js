@@ -237,7 +237,7 @@ function userToString(user) {
 exports.userToString = userToString;
 async function sendToChannel(channel, content, log_asError) {
     if (!channel) {
-        return (0, logger_1.info)(`can't send to null channel: ${messageContentToString(content)}`);
+        return (0, logger_1.error)(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
     (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
     try {
@@ -271,7 +271,7 @@ async function sendToChannel(channel, content, log_asError) {
         }
     }
     catch (err) {
-        (0, logger_1.error)(`Error sending to ${channelToString(channel, true)}, missing permissions?`);
+        (0, logger_1.error)(`❌ Error sending to ${channelToString(channel, true)}, missing permissions? | error: ${err}`);
     }
 }
 exports.sendToChannel = sendToChannel;
