@@ -46,7 +46,7 @@ export async function createRoleIfNotExists(guild: Guild, name: string, color: C
 }
 
 // delete a role in a guild if it exists
-export async function deleteRoleIfNotExists(guild: Guild, name: string) {
+export async function deleteRoleIfExists(guild: Guild, name: string) {
     const role = guild.roles.cache.find(role => role.name === name);
     if (role) {
         const role_message = `role: ${wrap(name, colors.LIGHTER_BLUE)} in ${guildToString(guild)}`;
