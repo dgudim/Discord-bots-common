@@ -447,3 +447,11 @@ export function isImageUrlType(type: string) {
 export function isPngOrJpgUrlType(type: string) {
     return type == "image/apng" || type == "image/png" || type == "image/jpeg" || type == "image/jpg";
 }
+
+export function setOrAppendToMap<K, V>(map: Map<K, V[]>, key: K, value: V) {
+    if (map.has(key)) {
+        map.get(key)!.push(value);
+    } else {
+        map.set(key, [value]);
+    }
+}

@@ -57,4 +57,5 @@ export declare function fetchUrl(url: string): Promise<{
 export declare function isPngOrJpg(name: string | null | undefined): boolean;
 export declare function isImageUrlType(type: string): boolean;
 export declare function isPngOrJpgUrlType(type: string): boolean;
+export declare function setOrAppendToMap<K, V>(map: Map<K, V[]>, key: K, value: V): void;
 export {};
