@@ -31,7 +31,7 @@ export declare function messageContentToString(content: MessageContents): string
 export declare function channelToString(channel: TextBasedChannel, parse_guild?: boolean): string;
 export declare function guildToString(guild: [Snowflake, OAuth2Guild] | BaseGuild | null): string;
 export declare function userToString(user: User): string;
-export declare function sendToChannel(channel: TextBasedChannel | none, content: MessageContents, log_asError?: boolean): Promise<void>;
+export declare function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, log_asError?: boolean): Promise<void>;
 export declare function messageReply(message: Message, content: string): Promise<void>;
 export declare function safeReply(interaction: CommandInteraction | none, content: MessageContents, ephemeral?: boolean): Promise<void>;
 export declare function getAllUrlFileAttachements(interaction: ChatInputCommandInteraction | none, url_key: string, attachement_key: string, check_if_image?: boolean): Promise<string[]>;

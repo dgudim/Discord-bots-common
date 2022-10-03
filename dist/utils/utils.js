@@ -236,8 +236,11 @@ function userToString(user) {
 }
 exports.userToString = userToString;
 async function sendToChannel(channel, content, log_asError) {
+    if (!content) {
+        return (0, logger_1.warn)(`❌ Can't send null content`);
+    }
     if (!channel) {
-        return (0, logger_1.error)(`❌ Can't send to null channel: ${messageContentToString(content)}`);
+        return (0, logger_1.warn)(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
     (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
     try {

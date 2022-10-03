@@ -6,7 +6,7 @@ import { DataError, JsonDB } from "node-json-db";
 import { blake3 } from "hash-wasm";
 
 import { colors, wrap } from "./colors";
-import { error, info, log, logLevel } from "./logger";
+import { error, info, log, logLevel, warn } from "./logger";
 import { Stream } from "stream";
 
 export const eight_mb = 1024 * 1024 * 8;
@@ -216,9 +216,14 @@ export function userToString(user: User) {
     return `👤 User: ${wrap(user.tag, colors.LIGHT_RED)} (${wrap(user.id, colors.GRAY)})`;
 }
 
-export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents, log_asError?: boolean): Promise<void> {
+export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, log_asError?: boolean): Promise<void> {
+
+    if (!content) {
+        return warn(`❌ Can't send null content`);
+    }
+
     if (!channel) {
-        return error(`❌ Can't send to null channel: ${messageContentToString(content)}`);
+        return warn(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
 
     log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
