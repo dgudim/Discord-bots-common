@@ -48,7 +48,12 @@ export async function isUrl(url: nullableString): Promise<boolean> {
     if (!url) {
         return false;
     }
-    return (await fetch(url)).ok;
+    try {
+        return (await fetch(url)).ok;
+    } catch (e) {
+        error(e);
+        return false;
+    }
 }
 
 export async function getFileHash(file: string): Promise<string> {
@@ -349,7 +354,7 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
     if (await isUrl(arg_url)) {
         urls.push(arg_url!);
     } else if (arg_url) {
-        await safeReply(interaction, "Invalid Url");
+        await safeReply(interaction, `Invalid Url: ${arg_url}`);
     }
     
     if (await isUrl(attachement_url)) {

@@ -43,7 +43,13 @@ async function isUrl(url) {
     if (!url) {
         return false;
     }
-    return (await fetch(url)).ok;
+    try {
+        return (await fetch(url)).ok;
+    }
+    catch (e) {
+        (0, logger_1.error)(e);
+        return false;
+    }
 }
 exports.isUrl = isUrl;
 async function getFileHash(file) {
@@ -370,7 +376,7 @@ async function getAllUrlFileAttachements(interaction, url_key, attachement_key, 
         urls.push(arg_url);
     }
     else if (arg_url) {
-        await safeReply(interaction, "Invalid Url");
+        await safeReply(interaction, `Invalid Url: ${arg_url}`);
     }
     if (await isUrl(attachement_url)) {
         if (check_if_image) {
