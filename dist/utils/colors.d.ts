@@ -1,4 +1,5 @@
 import { logLevel } from "./logger";
+/** enum mapping to console colors */
 export declare enum colors {
     PREVIOUS = "\u001B[30m",
     DEFAULT = "\u001B[39m",
@@ -17,5 +18,18 @@ export declare enum colors {
     LIGHT_PURPLE = "\u001B[95m",
     PURPLE = "\u001B[35m"
 }
+/**
+ * function to colorize a part of the message
+ *
+ * @param message input message
+ * @param color target color
+ * @return wrapped message, pass through `parse` before printing
+ */
 export declare function wrap(message: any, color: colors | logLevel): string;
+/**
+ * parse the string containing colors.PREVIOUS replacing it with appropriate colors
+ *
+ * @param str input string
+ * @returns parsed string
+ */
 export declare function parse(str: string): string;

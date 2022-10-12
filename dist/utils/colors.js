@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parse = exports.wrap = exports.colors = void 0;
 const colorEscapeStr = "\x1b[";
+/** enum mapping to console colors */
 var colors;
 (function (colors) {
     colors["PREVIOUS"] = "\u001B[30m";
@@ -21,6 +22,13 @@ var colors;
     colors["LIGHT_PURPLE"] = "\u001B[95m";
     colors["PURPLE"] = "\u001B[35m";
 })(colors = exports.colors || (exports.colors = {}));
+/**
+ * function to colorize a part of the message
+ *
+ * @param message input message
+ * @param color target color
+ * @return wrapped message, pass through `parse` before printing
+ */
 function wrap(message, color) {
     return `${color}${message}${colors.PREVIOUS}`;
 }
@@ -41,6 +49,12 @@ function getPreviousColor(str, steps_behind) {
     }
     return colors.DEFAULT;
 }
+/**
+ * parse the string containing colors.PREVIOUS replacing it with appropriate colors
+ *
+ * @param str input string
+ * @returns parsed string
+ */
 function parse(str) {
     let index;
     while ((index = str.lastIndexOf(colors.PREVIOUS)) >= 0) {

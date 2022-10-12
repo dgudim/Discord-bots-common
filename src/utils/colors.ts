@@ -2,6 +2,7 @@ import { logLevel } from "./logger";
 
 const colorEscapeStr = "\x1b[";
 
+/** enum mapping to console colors */ 
 export enum colors {
     PREVIOUS = "\x1b[30m",
     DEFAULT = "\x1b[39m",
@@ -27,6 +28,13 @@ export enum colors {
     PURPLE = "\x1b[35m"
 }
 
+/**
+ * function to colorize a part of the message
+ * 
+ * @param message input message
+ * @param color target color
+ * @return wrapped message, pass through `parse` before printing
+ */
 export function wrap(message: any, color: colors | logLevel) {
     return `${color}${message}${colors.PREVIOUS}`;
 }
@@ -51,6 +59,12 @@ function getPreviousColor(str: string, steps_behind: number) : string {
     return colors.DEFAULT;
 }
 
+/**
+ * parse the string containing colors.PREVIOUS replacing it with appropriate colors
+ * 
+ * @param str input string
+ * @returns parsed string
+ */
 export function parse(str: string) {
     let index;
     while ((index = str.lastIndexOf(colors.PREVIOUS)) >= 0) {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.normalizeTags = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.trimStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
+exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.normalizeStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const node_json_db_1 = require("node-json-db");
@@ -9,36 +9,72 @@ const colors_1 = require("./colors");
 const logger_1 = require("./logger");
 const stream_1 = require("stream");
 exports.eight_mb = 1024 * 1024 * 8;
+/**
+ * Check is path leads to a directory
+ * @param path Directory/File path
+ * @returns True if the path leads to a directory
+ */
 function isDirectory(path) {
     return path ? (fs.existsSync(path) && fs.statSync(path).isDirectory()) : false;
 }
 exports.isDirectory = isDirectory;
+/**
+ * Check is path leads to a file
+ * @param path Directory/File path
+ * @returns True if the path leads to a file
+ */
 function isFile(path) {
     return path ? (fs.existsSync(path) && fs.statSync(path).isFile()) : false;
 }
 exports.isFile = isFile;
+/**
+ * Get file name from path of url
+ * @param file Path/Url
+ * @returns The last part of the path or url
+ */
 function getFileName(file) {
     const parts = file.split("/");
     const lastPIndex = file.indexOf("?");
     return parts[parts.length - 1].substring(0, lastPIndex == -1 ? file.length : lastPIndex);
 }
 exports.getFileName = getFileName;
+/**
+ * Trim and lowercase a string
+ * @param str String to normalize
+ * @returns Lowercased and trimmed string
+ */
 function normalize(str) {
     return str ? str.toLowerCase().trim() : "";
 }
 exports.normalize = normalize;
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
+/**
+ * Get the log of a number with the base `base`
+ * @param base Base of the logarithm
+ * @param number Input number
+ * @returns The log with the base
+ */
+function getBaseLog(base, number) {
+    return Math.log(number) / Math.log(base);
 }
 exports.getBaseLog = getBaseLog;
-function trimStringArray(arr) {
+/**
+ * Normalizes every element of the string array
+ * @param arr Array to normalize
+ * @returns Array with every value normalized
+ */
+function normalizeStringArray(arr) {
     return arr.map(element => {
         return normalize(element);
     }).filter(element => {
         return element.length != 0;
     });
 }
-exports.trimStringArray = trimStringArray;
+exports.normalizeStringArray = normalizeStringArray;
+/**
+ * Check whether a given string is url
+ * @param url Input url/not url
+ * @returns Whether the input string is url
+ */
 async function isUrl(url) {
     if (!url) {
         return false;
@@ -52,10 +88,21 @@ async function isUrl(url) {
     }
 }
 exports.isUrl = isUrl;
+/**
+ * Get file blake3 hash
+ * @param file Input file
+ * @returns Blake3 hash
+ */
 async function getFileHash(file) {
-    return (0, hash_wasm_1.blake3)(fs.readFileSync(file));
+    return isFile(file) ? (0, hash_wasm_1.blake3)(fs.readFileSync(file)) : "";
 }
 exports.getFileHash = getFileHash;
+/**
+ * Get a value from a json database if it exists
+ * @param db Json databse
+ * @param path Key path
+ * @returns The value if it exists
+ */
 async function getValueIfExists(db, path) {
     try {
         return await db.getData(path);
@@ -68,6 +115,12 @@ async function getValueIfExists(db, path) {
     }
 }
 exports.getValueIfExists = getValueIfExists;
+/**
+ * Limit the length of a string
+ * @param str String to limit the length of
+ * @param max_length Maximum length of the string
+ * @returns Limited string, adding ... if it's too long
+ */
 function limitLength(str, max_length) {
     if (str.length > max_length) {
         str = str.slice(0, max_length - 3) + "...";
@@ -81,10 +134,10 @@ exports.limitLength = limitLength;
  * Assumes h, s, and v are contained in the set [0, 1] and
  * returns r, g, and b in the set [0, 255].
  *
- * @param   Number  h       The hue
- * @param   Number  s       The saturation
- * @param   Number  v       The value
- * @return  Array           The RGB representation
+ * @param   h       The hue
+ * @param   s       The saturation
+ * @param   v       The value
+ * @returns The RGB representation
  */
 function hsvToRgb(h, s, v) {
     let r = 0, g = 0, b = 0;
@@ -128,6 +181,11 @@ function hsvToRgb(h, s, v) {
     return [r * 255, g * 255, b * 255];
 }
 exports.hsvToRgb = hsvToRgb;
+/**
+ * Convert a percentage value to a gradient from red to green
+ * @param perc Value in percent (0 - 100)
+ * @returns Hex representation
+ */
 function perc2color(perc) {
     let r, g;
     const b = 0;
@@ -201,6 +259,11 @@ function payloadToString(payload) {
     }
     return str;
 }
+/**
+ * Сonvert message content to it's string representation
+ * @param content Almost any message content from DiscordJS (Embed, string, Payload, etc.)
+ * @returns String representation
+ */
 function messageContentToString(content) {
     if (content instanceof discord_js_1.EmbedBuilder) {
         return embedToString(content.data);
@@ -217,6 +280,11 @@ function messageContentToString(content) {
     }
 }
 exports.messageContentToString = messageContentToString;
+/**
+ * Сonvert a text channel to it's string representation
+ * @param channel Text channel from DiscordJS
+ * @returns String representation
+ */
 function channelToString(channel, parse_guild) {
     if ("guild" in channel) {
         const guild_str = parse_guild ? `${guildToString(channel.guild)} ` : "";
@@ -227,6 +295,11 @@ function channelToString(channel, parse_guild) {
     }
 }
 exports.channelToString = channelToString;
+/**
+ * Convert a guild to it's string representation
+ * @param guild Guild from DiscordJS
+ * @returns String representation
+ */
 function guildToString(guild) {
     if (!guild) {
         return `🛡️ Guild: ${(0, colors_1.wrap)("invalid", colors_1.colors.RED)}`;
@@ -237,10 +310,21 @@ function guildToString(guild) {
     return `🛡️ Guild: ${(0, colors_1.wrap)(guild[1], colors_1.colors.LIGHT_YELLOW)} (${(0, colors_1.wrap)(guild[0], colors_1.colors.GRAY)})`;
 }
 exports.guildToString = guildToString;
+/**
+ * Convert a user to it's string representation
+ * @param user User from DiscordJS
+ * @returns String representation
+ */
 function userToString(user) {
     return `👤 User: ${(0, colors_1.wrap)(user.tag, colors_1.colors.LIGHT_RED)} (${(0, colors_1.wrap)(user.id, colors_1.colors.GRAY)})`;
 }
 exports.userToString = userToString;
+/**
+ * Send a message to a text channel
+ * @param channel Discord text channel
+ * @param content Message contents
+ * @param log_asError Whether to log to the console as error
+ */
 async function sendToChannel(channel, content, log_asError) {
     if (!content) {
         return (0, logger_1.warn)(`❌ Can't send null content`);
@@ -284,11 +368,22 @@ async function sendToChannel(channel, content, log_asError) {
     }
 }
 exports.sendToChannel = sendToChannel;
+/**
+ * Reply to a message
+ * @param message Message to reply to
+ * @param content Reply content
+ */
 async function messageReply(message, content) {
     (0, logger_1.info)(`${channelToString(message.channel, true)}: (reply to ${message.content}) -> ${content}`);
     await message.reply(content);
 }
 exports.messageReply = messageReply;
+/**
+ * Safely reply to an interaction (if already replied send to channel, if deferred replied edit reply)
+ * @param interaction Interaction to reply to
+ * @param content Reply content
+ * @param ephemeral Whether the reply is only visible to sender
+ */
 async function safeReply(interaction, content, ephemeral = false) {
     if (!interaction) {
         return (0, logger_1.info)(`can't reply to null interraction with content: ${messageContentToString(content)}`);
@@ -363,6 +458,13 @@ async function safeReply(interaction, content, ephemeral = false) {
     }
 }
 exports.safeReply = safeReply;
+/**
+ * Gets url and attachement from an interaction
+ * @param interaction Interaction to get attachement urls from
+ * @param url_key Parameter key with url
+ * @param attachement_key Parameter key with an attachement
+ * @param check_if_image Whether to chek if urls point to an image
+ */
 async function getAllUrlFileAttachements(interaction, url_key, attachement_key, check_if_image) {
     if (!interaction) {
         (0, logger_1.info)(`can't get attachements from a null interraction with keys: ${url_key} ${attachement_key}`);
@@ -395,6 +497,11 @@ async function getAllUrlFileAttachements(interaction, url_key, attachement_key, 
     return urls;
 }
 exports.getAllUrlFileAttachements = getAllUrlFileAttachements;
+/**
+ * Get all images from a directory recursively
+ * @param dir Directory to walk
+ * @returns List of images in a directory
+ */
 function walk(dir) {
     let results = [];
     const list = fs.readdirSync(dir);
@@ -413,6 +520,13 @@ function walk(dir) {
     return results;
 }
 exports.walk = walk;
+/**
+ * Construct a simple embed
+ * @param title Embed title
+ * @param description Embed description
+ * @param color Embed color
+ * @returns Constructed embed
+ */
 function getSimpleEmbed(title, description, color) {
     const embed = new discord_js_1.EmbedBuilder();
     embed.setTitle(title);
@@ -421,6 +535,9 @@ function getSimpleEmbed(title, description, color) {
     return embed;
 }
 exports.getSimpleEmbed = getSimpleEmbed;
+/**
+ * @returns Current date and time
+ */
 function getDateTime() {
     const now = new Date();
     const date = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
@@ -428,6 +545,11 @@ function getDateTime() {
     return date + " " + time;
 }
 exports.getDateTime = getDateTime;
+/**
+ * Convert seconds to days, hours, minutes and seconds
+ * @param seconds Time in seconds
+ * @returns Time in days, hours, minutes and seconds
+ */
 function secondsToDhms(seconds) {
     const d = Math.floor(seconds / (3600 * 24));
     const h = Math.floor(seconds % (3600 * 24) / 3600);
@@ -440,22 +562,39 @@ function secondsToDhms(seconds) {
     return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 exports.secondsToDhms = secondsToDhms;
+/**
+ * Clamp a value between to limits
+ * @param num Number to clamp
+ * @param min Lower limit
+ * @param max Lower limit
+ * @returns Clamped value
+ */
 function clamp(num, min, max) {
     return Math.min(Math.max(num, min), max);
 }
 exports.clamp = clamp;
+/**
+ * Wait for some time
+ * @param ms time in milliseconds
+ */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 exports.sleep = sleep;
-function normalizeTags(tags) {
-    return tags.replaceAll(" ", ",").replaceAll("_", " ").replaceAll(":", "_").replaceAll("'", "");
-}
-exports.normalizeTags = normalizeTags;
+/**
+ * Remove http/https scheme from a url
+ * @param url a url
+ * @returns url without http/https scheme
+ */
 function stripUrlScheme(url) {
     return url.replace("https://", "").replace("http://", "");
 }
 exports.stripUrlScheme = stripUrlScheme;
+/**
+ * Fetch a url
+ * @param url Url to fetch
+ * @returns Fetch status
+ */
 async function fetchUrl(url) {
     const res = await fetch(url);
     if (!res.ok) {
@@ -465,18 +604,39 @@ async function fetchUrl(url) {
     return { ok: res.ok, type: buff.type, status: res.status, statusText: res.statusText };
 }
 exports.fetchUrl = fetchUrl;
+/**
+ * Determine whether a file ai png or jpg
+ * @param name file name
+ * @returns
+ */
 function isPngOrJpg(name) {
     return name ? (name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".jpg")) : false;
 }
 exports.isPngOrJpg = isPngOrJpg;
+/**
+ * Determine whether url type is image
+ * @param type file name
+ * @returns
+ */
 function isImageUrlType(type) {
     return type.startsWith("image/");
 }
 exports.isImageUrlType = isImageUrlType;
+/**
+ * Determine whether url type is png or jpg
+ * @param type file name
+ * @returns
+ */
 function isPngOrJpgUrlType(type) {
     return type == "image/apng" || type == "image/png" || type == "image/jpeg" || type == "image/jpg";
 }
 exports.isPngOrJpgUrlType = isPngOrJpgUrlType;
+/**
+ * Add a new element with a specified key and value to the Map, or overwrite if exists
+ * @param map Target map
+ * @param key Target key
+ * @param value Value to put
+ */
 function setOrAppendToMap(map, key, value) {
     if (map.has(key)) {
         map.get(key).push(value);
