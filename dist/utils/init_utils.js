@@ -7,6 +7,12 @@ const path = require("path");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
 const utils_1 = require("./utils");
+/**
+ * Test if an environment variable is set
+ * @param var_name Environment variable name
+ * @param exit Whether to exit if the variable is not set
+ * @param is_file Whether the variable should point to a file
+ */
 function testEnvironmentVar(var_name, exit, is_file) {
     if (!process.env[var_name]) {
         if (exit) {
@@ -28,10 +34,22 @@ function testEnvironmentVar(var_name, exit, is_file) {
     }
 }
 exports.testEnvironmentVar = testEnvironmentVar;
+/**
+ * Get an environment variable
+ * @param var_name Environment variable name
+ * @param default_value Fallback value
+ * @returns Variable contents of fallback value
+ */
 function getEnvironmentVar(var_name, default_value = "") {
     return process.env[var_name] || default_value;
 }
 exports.getEnvironmentVar = getEnvironmentVar;
+/**
+ * Get DKRCommands commands handler instance
+ * @param client A discord bot client instance
+ * @param project_root_dir Project root directory (__dirname)
+ * @returns DKRCommands commands handler instance
+ */
 function dkrInit(client, project_root_dir) {
     const handler = new dkrcommands_1.DKRCommands(client, {
         commandsDir: path.join(project_root_dir, "commands"),
@@ -44,7 +62,7 @@ function dkrInit(client, project_root_dir) {
 }
 exports.dkrInit = dkrInit;
 /**
- *
+ * Get a discord bot client instance
  * @param intents Bot intents
  * @returns A discord bot client instance with specified intents or default ones if none were provided
  */

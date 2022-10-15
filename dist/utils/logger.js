@@ -9,6 +9,11 @@ var logLevel;
     logLevel["WARN"] = "\u001B[33m";
     logLevel["ERROR"] = "\u001B[91m";
 })(logLevel = exports.logLevel || (exports.logLevel = {}));
+/**
+ * Base log function, log with any color
+ * @param message Message
+ * @param color color or logLevel
+ */
 function log(message, color) {
     switch (color) {
         case logLevel.DEBUG:
@@ -25,18 +30,34 @@ function log(message, color) {
     }
 }
 exports.log = log;
+/**
+ * Log a debug message
+ * @param message Message
+ */
 function debug(message) {
     log(message, logLevel.DEBUG);
 }
 exports.debug = debug;
+/**
+ * Log an debug message
+ * @param message Message
+ */
 function info(message) {
     log(message, logLevel.INFO);
 }
 exports.info = info;
+/**
+ * Log a warning message
+ * @param message Message
+ */
 function warn(message) {
     log(message, logLevel.WARN);
 }
 exports.warn = warn;
+/**
+ * Log an error message
+ * @param message Message
+ */
 function error(message) {
     log(message, logLevel.ERROR);
 }

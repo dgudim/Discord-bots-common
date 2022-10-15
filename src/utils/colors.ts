@@ -33,7 +33,7 @@ export enum colors {
  * 
  * @param message input message
  * @param color target color
- * @return wrapped message, pass through `parse` before printing
+ * @return wrapped message, pass through {@link parse} before printing
  */
 export function wrap(message: any, color: colors | logLevel) {
     return `${color}${message}${colors.PREVIOUS}`;

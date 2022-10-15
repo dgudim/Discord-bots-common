@@ -19,8 +19,8 @@
   },
   "pre-commit": [
     "precommit-msg",
-    "build",
-    "doc"
+    "doc",
+    "build"
   ],
   "dependencies": {
     "discord.js": "^14.6.0",

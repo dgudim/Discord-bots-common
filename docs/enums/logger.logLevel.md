@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[utils/logger.ts:4](https://github.com/dgudim/Discord-bots-common/blob/8226d81/src/utils/logger.ts#L4)
+[utils/logger.ts:4](https://github.com/dgudim/Discord-bots-common/blob/22e49ab/src/utils/logger.ts#L4)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[utils/logger.ts:7](https://github.com/dgudim/Discord-bots-common/blob/8226d81/src/utils/logger.ts#L7)
+[utils/logger.ts:7](https://github.com/dgudim/Discord-bots-common/blob/22e49ab/src/utils/logger.ts#L7)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[utils/logger.ts:5](https://github.com/dgudim/Discord-bots-common/blob/8226d81/src/utils/logger.ts#L5)
+[utils/logger.ts:5](https://github.com/dgudim/Discord-bots-common/blob/22e49ab/src/utils/logger.ts#L5)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[utils/logger.ts:6](https://github.com/dgudim/Discord-bots-common/blob/8226d81/src/utils/logger.ts#L6)
+[utils/logger.ts:6](https://github.com/dgudim/Discord-bots-common/blob/22e49ab/src/utils/logger.ts#L6)

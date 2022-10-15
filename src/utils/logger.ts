@@ -7,7 +7,12 @@ export enum logLevel {
     ERROR = colors.LIGHT_RED
 }
 
-export function log(message: any, color: logLevel) {
+/**
+ * Base log function, log with any color
+ * @param message Message
+ * @param color color or logLevel
+ */
+export function log(message: any, color: colors | logLevel) {
     switch (color) {
         case logLevel.DEBUG:
         case logLevel.INFO:
@@ -23,18 +28,34 @@ export function log(message: any, color: logLevel) {
     }
 }
 
+/**
+ * Log a debug message
+ * @param message Message
+ */
 export function debug(message: any) {
     log(message, logLevel.DEBUG);
 }
 
+/**
+ * Log an debug message
+ * @param message Message
+ */
 export function info(message: any) {
     log(message, logLevel.INFO);
 }
 
+/**
+ * Log a warning message
+ * @param message Message
+ */
 export function warn(message: any) {
     log(message, logLevel.WARN);
 }
 
+/**
+ * Log an error message
+ * @param message Message
+ */
 export function error(message: any) {
     log(message, logLevel.ERROR);
 }

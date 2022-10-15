@@ -5,7 +5,11 @@ const discord_js_1 = require("discord.js");
 const colors_1 = require("./colors");
 const logger_1 = require("./logger");
 const utils_1 = require("./utils");
-// get all members from a guild
+/**
+ * Get all members from a guild
+ * @param guild Guild to get members from
+ * @returns All members
+ */
 async function getAllMembers(guild) {
     const members = [];
     const members_async = await guild.members.fetch();
@@ -15,7 +19,11 @@ async function getAllMembers(guild) {
     return members;
 }
 exports.getAllMembers = getAllMembers;
-// get all guild the bot is currently in
+/**
+ * Get all guilds the bot is currently in
+ * @param client Bot client instance
+ * @returns All guild
+ */
 async function getAllGuilds(client) {
     const guilds = [];
     const guilds_async = await client.guilds.fetch();
@@ -25,7 +33,13 @@ async function getAllGuilds(client) {
     return guilds;
 }
 exports.getAllGuilds = getAllGuilds;
-// create a role in a guild if it doesn't exist
+/**
+ * Create a role in a guild if it doesn't exist
+ * @param guild Target guild
+ * @param name Role name
+ * @param color Role color
+ * @returns Created or retrieved role
+ */
 async function createRoleIfNotExists(guild, name, color) {
     let role = guild.roles.cache.find(role => role.name === name);
     if (!role) {
@@ -44,7 +58,11 @@ async function createRoleIfNotExists(guild, name, color) {
     return role;
 }
 exports.createRoleIfNotExists = createRoleIfNotExists;
-// delete a role in a guild if it exists
+/**
+ * Delete a role in a guild if it exists
+ * @param guild Target guild
+ * @param name Role name
+ */
 async function deleteRoleIfExists(guild, name) {
     const role = guild.roles.cache.find(role => role.name === name);
     if (role) {
@@ -59,7 +77,13 @@ async function deleteRoleIfExists(guild, name) {
     }
 }
 exports.deleteRoleIfExists = deleteRoleIfExists;
-// create channel or a channel category in a guild if it doesn't exist
+/**
+ * Create channel or a channel category in a guild if it doesn't exist
+ * @param guild Target guild
+ * @param options Channel options
+ * @param is_category Whether to create a category channel
+ * @returns Created or retrieved channel
+ */
 async function createChannelIfNotExists(guild, options, is_category) {
     let channel = guild.channels.cache.find(channel => channel.name === options.name
         && (channel.type == discord_js_1.ChannelType.GuildCategory || !is_category));
@@ -76,7 +100,11 @@ async function createChannelIfNotExists(guild, options, is_category) {
     return channel;
 }
 exports.createChannelIfNotExists = createChannelIfNotExists;
-// delete channel or a channel category in a guild if it exists
+/**
+ * Delete channel or a channel category in a guild if it exists
+ * @param guild Target guild
+ * @param name Channel name
+ */
 async function deleteChannelIfExists(guild, name) {
     const channel = guild.channels.cache.find(channel => channel.name === name);
     if (channel) {
@@ -91,7 +119,13 @@ async function deleteChannelIfExists(guild, name) {
     }
 }
 exports.deleteChannelIfExists = deleteChannelIfExists;
-// try tu get a member from a guild by id, return undefined if it doesn't exist
+// 
+/**
+ * Try to get a member from a guild by id, return undefined if it doesn't exist
+ * @param guild Target guild
+ * @param memberId Member id
+ * @returns Guild member if found
+ */
 async function tryToGetMember(guild, memberId) {
     try {
         return await guild.members.fetch(memberId);
@@ -102,7 +136,12 @@ async function tryToGetMember(guild, memberId) {
     }
 }
 exports.tryToGetMember = tryToGetMember;
-// utility function to update user's roles, e.g. rank roles or clan roles
+/**
+ * Update user's roles, e.g. rank roles or clan roles
+ * @param prev_role_name Previous role name (starts with)
+ * @param member Target member
+ * @param new_roles New role
+ */
 async function swapRoles(prev_role_name, member, new_roles) {
     if (!new_roles) {
         return (0, logger_1.error)(`❌ Can't swap undefined roles`);

@@ -241,6 +241,9 @@ function payloadToString(payload: MessagePayloadOption) {
     return str;
 }
 
+/**
+ * Type alias for most of discord's message content types
+ */
 type MessageContents = string | EmbedBuilder | MessagePayload | MessagePayloadOption;
 
 /**
@@ -264,6 +267,7 @@ export function messageContentToString(content: MessageContents) {
 /**
  * Сonvert a text channel to it's string representation
  * @param channel Text channel from DiscordJS
+ * @param parse_guild Whether to prepenf guild co channel
  * @returns String representation
  */
 export function channelToString(channel: TextBasedChannel, parse_guild?: boolean) {
@@ -303,9 +307,9 @@ export function userToString(user: User) {
  * Send a message to a text channel
  * @param channel Discord text channel
  * @param content Message contents
- * @param log_asError Whether to log to the console as error
+ * @param logAsError Whether to log to the console as error
  */
-export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, log_asError?: boolean): Promise<void> {
+export async function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, logAsError?: boolean): Promise<void> {
 
     if (!content) {
         return warn(`❌ Can't send null content`);
@@ -315,7 +319,7 @@ export async function sendToChannel(channel: TextBasedChannel | none, content: M
         return warn(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
 
-    log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logLevel.ERROR : logLevel.INFO);
+    log(`${channelToString(channel, true)}: ${messageContentToString(content)}`, logAsError ? logLevel.ERROR : logLevel.INFO);
 
     try {
         if (content instanceof EmbedBuilder) {
