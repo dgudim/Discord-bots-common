@@ -283,6 +283,7 @@ exports.messageContentToString = messageContentToString;
 /**
  * Сonvert a text channel to it's string representation
  * @param channel Text channel from DiscordJS
+ * @param parse_guild Whether to prepenf guild co channel
  * @returns String representation
  */
 function channelToString(channel, parse_guild) {
@@ -323,16 +324,16 @@ exports.userToString = userToString;
  * Send a message to a text channel
  * @param channel Discord text channel
  * @param content Message contents
- * @param log_asError Whether to log to the console as error
+ * @param logAsError Whether to log to the console as error
  */
-async function sendToChannel(channel, content, log_asError) {
+async function sendToChannel(channel, content, logAsError) {
     if (!content) {
         return (0, logger_1.warn)(`❌ Can't send null content`);
     }
     if (!channel) {
         return (0, logger_1.warn)(`❌ Can't send to null channel: ${messageContentToString(content)}`);
     }
-    (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, log_asError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
+    (0, logger_1.log)(`${channelToString(channel, true)}: ${messageContentToString(content)}`, logAsError ? logger_1.logLevel.ERROR : logger_1.logLevel.INFO);
     try {
         if (content instanceof discord_js_1.EmbedBuilder) {
             await channel.send({

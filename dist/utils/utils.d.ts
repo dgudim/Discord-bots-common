@@ -84,6 +84,9 @@ export declare function hsvToRgb(h: number, s: number, v: number): [red: number,
  * @returns Hex representation
  */
 export declare function perc2color(perc: number): ColorResolvable;
+/**
+ * Type alias for most of discord's message content types
+ */
 declare type MessageContents = string | EmbedBuilder | MessagePayload | MessagePayloadOption;
 /**
  * Сonvert message content to it's string representation
@@ -94,6 +97,7 @@ export declare function messageContentToString(content: MessageContents): string
 /**
  * Сonvert a text channel to it's string representation
  * @param channel Text channel from DiscordJS
+ * @param parse_guild Whether to prepenf guild co channel
  * @returns String representation
  */
 export declare function channelToString(channel: TextBasedChannel, parse_guild?: boolean): string;
@@ -113,9 +117,9 @@ export declare function userToString(user: User): string;
  * Send a message to a text channel
  * @param channel Discord text channel
  * @param content Message contents
- * @param log_asError Whether to log to the console as error
+ * @param logAsError Whether to log to the console as error
  */
-export declare function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, log_asError?: boolean): Promise<void>;
+export declare function sendToChannel(channel: TextBasedChannel | none, content: MessageContents | none, logAsError?: boolean): Promise<void>;
 /**
  * Reply to a message
  * @param message Message to reply to

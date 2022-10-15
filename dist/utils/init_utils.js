@@ -43,6 +43,11 @@ function dkrInit(client, project_root_dir) {
     return handler;
 }
 exports.dkrInit = dkrInit;
+/**
+ *
+ * @param intents Bot intents
+ * @returns A discord bot client instance with specified intents or default ones if none were provided
+ */
 function getClient(intents) {
     return new discord_js_1.Client({
         intents: intents || [

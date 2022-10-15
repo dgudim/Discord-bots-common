@@ -27,7 +27,7 @@ var colors;
  *
  * @param message input message
  * @param color target color
- * @return wrapped message, pass through `parse` before printing
+ * @return wrapped message, pass through {@link parse} before printing
  */
 function wrap(message, color) {
     return `${color}${message}${colors.PREVIOUS}`;
