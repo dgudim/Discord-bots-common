@@ -15,7 +15,7 @@
   "scripts": {
     "precommit-msg": "echo 'Building before commit' && exit 0",
     "build": "tsc",
-    "doc": "typedoc --plugin typedoc-plugin-markdown --out docs ./src/index.ts",
+    "doc": "typedoc --gitRevision master --plugin typedoc-plugin-markdown --out docs ./src/index.ts",
     "amend": "mv .git/hooks/post-commit .git/hooks/post-commit_dis && git commit -a --no-verify --no-edit --amend && mv .git/hooks/post-commit_dis .git/hooks/post-commit"
   },
   "pre-commit": [
@@ -42,6 +42,7 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.16",
     "typedoc-plugin-markdown": "^3.13.6",
+    "typedoc-plugin-sourcefile-url": "^1.0.6",
     "typescript": "^4.8.4"
   },
   "engines": {
