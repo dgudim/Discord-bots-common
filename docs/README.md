@@ -1,3 +1,5 @@
+discord_bots_common / [Exports](modules.md)
+
 # Discord_bots-common
 
 This is a core library for my discord bots
@@ -13,4 +15,3 @@ npm install github:dgudim/Discord_bots-common
   4. Other utilities (`getDateTime`, `secondsToDhms`, `stripUrlScheme`, `fetchUrl`, etc.)
   
 For more info see the [Full doc](./docs/modules.md)
-  
