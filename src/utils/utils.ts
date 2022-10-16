@@ -593,9 +593,9 @@ export async function fetchUrl(url: string) {
 }
 
 /**
- * Determine whether a file ai png or jpg
+ * Determine whether a file ends with png or jpg
  * @param name file name
- * @returns 
+ * @returns Whether a file ends with png or jpg
  */
 export function isPngOrJpg(name: string | none) {
     return name ? (name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".jpg")) : false;
@@ -604,7 +604,7 @@ export function isPngOrJpg(name: string | none) {
 /**
  * Determine whether url type is image
  * @param type file name
- * @returns 
+ * @returns Whether a url type is any image
  */
 export function isImageUrlType(type: string) {
     return type.startsWith("image/");
@@ -613,7 +613,7 @@ export function isImageUrlType(type: string) {
 /**
  * Determine whether url type is png or jpg
  * @param type file name
- * @returns 
+ * @returns Whether a url type is png or jpg
  */
 export function isPngOrJpgUrlType(type: string) {
     return type == "image/apng" || type == "image/png" || type == "image/jpeg" || type == "image/jpg";
@@ -624,11 +624,14 @@ export function isPngOrJpgUrlType(type: string) {
  * @param map Target map
  * @param key Target key
  * @param value Value to put
+ * @returns True if the key was created
  */
 export function setOrAppendToMap<K, V>(map: Map<K, V[]>, key: K, value: V) {
     if (map.has(key)) {
         map.get(key)!.push(value);
+        return false;
     } else {
         map.set(key, [value]);
+        return true;
     }
 }

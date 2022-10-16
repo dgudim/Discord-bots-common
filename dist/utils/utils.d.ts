@@ -207,21 +207,21 @@ export declare function fetchUrl(url: string): Promise<{
     statusText: string;
 }>;
 /**
- * Determine whether a file ai png or jpg
+ * Determine whether a file ends with png or jpg
  * @param name file name
- * @returns
+ * @returns Whether a file ends with png or jpg
  */
 export declare function isPngOrJpg(name: string | none): boolean;
 /**
  * Determine whether url type is image
  * @param type file name
- * @returns
+ * @returns Whether a url type is any image
  */
 export declare function isImageUrlType(type: string): boolean;
 /**
  * Determine whether url type is png or jpg
  * @param type file name
- * @returns
+ * @returns Whether a url type is png or jpg
  */
 export declare function isPngOrJpgUrlType(type: string): boolean;
 /**
@@ -229,6 +229,7 @@ export declare function isPngOrJpgUrlType(type: string): boolean;
  * @param map Target map
  * @param key Target key
  * @param value Value to put
+ * @returns True if the key was created
  */
-export declare function setOrAppendToMap<K, V>(map: Map<K, V[]>, key: K, value: V): void;
+export declare function setOrAppendToMap<K, V>(map: Map<K, V[]>, key: K, value: V): boolean;
 export {};

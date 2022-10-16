@@ -615,9 +615,9 @@ async function fetchUrl(url) {
 }
 exports.fetchUrl = fetchUrl;
 /**
- * Determine whether a file ai png or jpg
+ * Determine whether a file ends with png or jpg
  * @param name file name
- * @returns
+ * @returns Whether a file ends with png or jpg
  */
 function isPngOrJpg(name) {
     return name ? (name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".jpg")) : false;
@@ -626,7 +626,7 @@ exports.isPngOrJpg = isPngOrJpg;
 /**
  * Determine whether url type is image
  * @param type file name
- * @returns
+ * @returns Whether a url type is any image
  */
 function isImageUrlType(type) {
     return type.startsWith("image/");
@@ -635,7 +635,7 @@ exports.isImageUrlType = isImageUrlType;
 /**
  * Determine whether url type is png or jpg
  * @param type file name
- * @returns
+ * @returns Whether a url type is png or jpg
  */
 function isPngOrJpgUrlType(type) {
     return type == "image/apng" || type == "image/png" || type == "image/jpeg" || type == "image/jpg";
@@ -646,13 +646,16 @@ exports.isPngOrJpgUrlType = isPngOrJpgUrlType;
  * @param map Target map
  * @param key Target key
  * @param value Value to put
+ * @returns True if the key was created
  */
 function setOrAppendToMap(map, key, value) {
     if (map.has(key)) {
         map.get(key).push(value);
+        return false;
     }
     else {
         map.set(key, [value]);
+        return true;
     }
 }
 exports.setOrAppendToMap = setOrAppendToMap;
