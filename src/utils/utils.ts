@@ -102,6 +102,15 @@ export async function getFileHash(file: string): Promise<string> {
 }
 
 /**
+ * Get string blake3 hash
+ * @param str Input String
+ * @returns Blake3 hash
+ */
+export async function getStringHash(str: string): Promise<string> {
+    return blake3(str);
+}
+
+/**
  * Get a value from a json database if it exists
  * @param db Json databse
  * @param path Key path

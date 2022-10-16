@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getFileHash = exports.isUrl = exports.normalizeStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
+exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getStringHash = exports.getFileHash = exports.isUrl = exports.normalizeStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const node_json_db_1 = require("node-json-db");
@@ -97,6 +97,15 @@ async function getFileHash(file) {
     return isFile(file) ? (0, hash_wasm_1.blake3)(fs.readFileSync(file)) : "";
 }
 exports.getFileHash = getFileHash;
+/**
+ * Get string blake3 hash
+ * @param str Input String
+ * @returns Blake3 hash
+ */
+async function getStringHash(str) {
+    return (0, hash_wasm_1.blake3)(str);
+}
+exports.getStringHash = getStringHash;
 /**
  * Get a value from a json database if it exists
  * @param db Json databse

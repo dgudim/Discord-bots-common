@@ -53,6 +53,12 @@ export declare function isUrl(url: nullableString): Promise<boolean>;
  */
 export declare function getFileHash(file: string): Promise<string>;
 /**
+ * Get string blake3 hash
+ * @param str Input String
+ * @returns Blake3 hash
+ */
+export declare function getStringHash(str: string): Promise<string>;
+/**
  * Get a value from a json database if it exists
  * @param db Json databse
  * @param path Key path
