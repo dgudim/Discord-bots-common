@@ -233,10 +233,7 @@ function attachmentToString(attachment) {
     else if (typeof innerAttachment === "string") {
         str = innerAttachment;
     }
-    if (attachment instanceof discord_js_1.Attachment) {
-        str += `| ${attachment.contentType} | ${attachment.url} |`;
-    }
-    return `\n${attachment.name}: ${attachment.description}, data: ${str}`;
+    return `\nattachement: ${attachment.name} | ${str}`;
 }
 function payloadToString(payload) {
     let str = payload.content || "";

@@ -218,11 +218,7 @@ function attachmentToString(attachment: Attachment | AttachmentPayload | Attachm
         str = innerAttachment;
     }
 
-    if (attachment instanceof Attachment) {
-         str += `| ${attachment.contentType} | ${attachment.url} |`;
-    }
-
-    return `\n${attachment.name}: ${attachment.description}, data: ${str}`;
+    return `\nattachement: ${attachment.name} | ${str}`;
 }
 
 function payloadToString(payload: MessagePayloadOption) {
@@ -290,7 +286,7 @@ export function messageToString(message: Message) {
     for (const [, attachment] of message.attachments) {
         str += attachmentToString(attachment);
     }
-    
+
     return str;
 }
 
