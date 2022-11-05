@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption } from "discord.js";
+import { ColorResolvable, CommandInteraction, Message, MessagePayload, EmbedBuilder, TextBasedChannel, ChatInputCommandInteraction, APIEmbed, Snowflake, OAuth2Guild, BaseGuild, User, MessagePayloadOption, Attachment, Collection, AttachmentPayload, AttachmentBuilder } from "discord.js";
 import * as fs from "fs";
 
 import { DataError, JsonDB } from "node-json-db";
@@ -209,6 +209,22 @@ function embedToString(embed: APIEmbed) {
     return str;
 }
 
+function attachmentToString(attachment: Attachment | AttachmentPayload | AttachmentBuilder) {
+    const innerAttachment = attachment.attachment;
+    let str = "stream";
+    if (innerAttachment instanceof Buffer) {
+        str = `buffer(${innerAttachment.byteLength}`;
+    } else if (typeof innerAttachment === "string") {
+        str = innerAttachment;
+    }
+
+    if (attachment instanceof Attachment) {
+         str += `| ${attachment.contentType} | ${attachment.url} |`;
+    }
+
+    return `\n${attachment.name}: ${attachment.description}, data: ${str}`;
+}
+
 function payloadToString(payload: MessagePayloadOption) {
     let str = payload.content || "";
     if (payload.files?.length) {
@@ -218,15 +234,7 @@ function payloadToString(payload: MessagePayloadOption) {
                 str += `\n${file}`;
             } else if ("attachment" in file) {
                 // Attachment, AttachmentPayload and AttachmentBuilder
-
-                let attachment = "stream";
-                if (file.attachment instanceof Buffer) {
-                    attachment = `buffer(${file.attachment.byteLength}`;
-                } else if (typeof file.attachment === "string") {
-                    attachment = file.attachment;
-                }
-
-                str += `\n${file.name}: ${file.description}, data: ${attachment}`;
+                str += attachmentToString(file);
             } else if (file instanceof Buffer) {
                 str += `\nbuffer (${file.byteLength})`;
             } else if (file instanceof Stream) {
@@ -271,6 +279,19 @@ export function messageContentToString(content: MessageContents) {
         // message payload option
         return payloadToString(content);
     }
+}
+
+export function messageToString(message: Message) {
+    let str = messageContentToString({
+        content: message.content,
+        embeds: message.embeds
+    });
+    
+    for (const [, attachment] of message.attachments) {
+        str += attachmentToString(attachment);
+    }
+    
+    return str;
 }
 
 /**
@@ -357,7 +378,7 @@ export async function sendToChannel(channel: TextBasedChannel | none, content: M
             });
         }
     } catch (err) {
-        error(`❌ Error sending to ${channelToString(channel, true) }, missing permissions? | error: ${err}`);
+        error(`❌ Error sending to ${channelToString(channel, true)}, missing permissions? | error: ${err}`);
     }
 }
 
@@ -471,7 +492,7 @@ export async function getAllUrlFileAttachements(interaction: ChatInputCommandInt
     } else if (arg_url) {
         await safeReply(interaction, `Invalid Url: ${arg_url}`);
     }
-    
+
     if (await isUrl(attachement_url)) {
         if (check_if_image) {
             const res = await fetchUrl(attachement_url);

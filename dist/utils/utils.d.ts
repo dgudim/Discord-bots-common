@@ -100,6 +100,7 @@ declare type MessageContents = string | EmbedBuilder | MessagePayload | MessageP
  * @returns String representation
  */
 export declare function messageContentToString(content: MessageContents): string;
+export declare function messageToString(message: Message): string;
 /**
  * Сonvert a text channel to it's string representation
  * @param channel Text channel from DiscordJS

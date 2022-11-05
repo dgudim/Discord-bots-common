@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getStringHash = exports.getFileHash = exports.isUrl = exports.normalizeStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
+exports.setOrAppendToMap = exports.isPngOrJpgUrlType = exports.isImageUrlType = exports.isPngOrJpg = exports.fetchUrl = exports.stripUrlScheme = exports.sleep = exports.clamp = exports.secondsToDhms = exports.getDateTime = exports.getSimpleEmbed = exports.walk = exports.getAllUrlFileAttachements = exports.safeReply = exports.messageReply = exports.sendToChannel = exports.userToString = exports.guildToString = exports.channelToString = exports.messageToString = exports.messageContentToString = exports.perc2color = exports.hsvToRgb = exports.limitLength = exports.getValueIfExists = exports.getStringHash = exports.getFileHash = exports.isUrl = exports.normalizeStringArray = exports.getBaseLog = exports.normalize = exports.getFileName = exports.isFile = exports.isDirectory = exports.eight_mb = void 0;
 const discord_js_1 = require("discord.js");
 const fs = require("fs");
 const node_json_db_1 = require("node-json-db");
@@ -224,6 +224,20 @@ function embedToString(embed) {
     str += "\n----------------------------------------------------------";
     return str;
 }
+function attachmentToString(attachment) {
+    const innerAttachment = attachment.attachment;
+    let str = "stream";
+    if (innerAttachment instanceof Buffer) {
+        str = `buffer(${innerAttachment.byteLength}`;
+    }
+    else if (typeof innerAttachment === "string") {
+        str = innerAttachment;
+    }
+    if (attachment instanceof discord_js_1.Attachment) {
+        str += `| ${attachment.contentType} | ${attachment.url} |`;
+    }
+    return `\n${attachment.name}: ${attachment.description}, data: ${str}`;
+}
 function payloadToString(payload) {
     let str = payload.content || "";
     if (payload.files?.length) {
@@ -234,14 +248,7 @@ function payloadToString(payload) {
             }
             else if ("attachment" in file) {
                 // Attachment, AttachmentPayload and AttachmentBuilder
-                let attachment = "stream";
-                if (file.attachment instanceof Buffer) {
-                    attachment = `buffer(${file.attachment.byteLength}`;
-                }
-                else if (typeof file.attachment === "string") {
-                    attachment = file.attachment;
-                }
-                str += `\n${file.name}: ${file.description}, data: ${attachment}`;
+                str += attachmentToString(file);
             }
             else if (file instanceof Buffer) {
                 str += `\nbuffer (${file.byteLength})`;
@@ -289,6 +296,17 @@ function messageContentToString(content) {
     }
 }
 exports.messageContentToString = messageContentToString;
+function messageToString(message) {
+    let str = messageContentToString({
+        content: message.content,
+        embeds: message.embeds
+    });
+    for (const [, attachment] of message.attachments) {
+        str += attachmentToString(attachment);
+    }
+    return str;
+}
+exports.messageToString = messageToString;
 /**
  * Сonvert a text channel to it's string representation
  * @param channel Text channel from DiscordJS
