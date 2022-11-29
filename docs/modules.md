@@ -1,4 +1,4 @@
-[discord_bots_common](README.md) / Exports
+[discord_bots_common](README.md) / Modules
 
 # discord_bots_common
 

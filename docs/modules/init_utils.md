@@ -1,4 +1,4 @@
-[discord_bots_common](../README.md) / [Exports](../modules.md) / init\_utils
+[discord_bots_common](../README.md) / [Modules](../modules.md) / init\_utils
 
 # Namespace: init\_utils
 
@@ -34,7 +34,7 @@ DKRCommands commands handler instance
 
 #### Defined in
 
-[utils/init_utils.ts:48](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/init_utils.ts#L48)
+[utils/init_utils.ts:48](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/init_utils.ts#L48)
 
 ___
 
@@ -48,7 +48,7 @@ Get a discord bot client instance
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `intents?` | `BitFieldResolvable`<``"Guilds"`` \| ``"GuildMembers"`` \| ``"GuildBans"`` \| ``"GuildEmojisAndStickers"`` \| ``"GuildIntegrations"`` \| ``"GuildWebhooks"`` \| ``"GuildInvites"`` \| ``"GuildVoiceStates"`` \| ``"GuildPresences"`` \| ``"GuildMessages"`` \| ``"GuildMessageReactions"`` \| ``"GuildMessageTyping"`` \| ``"DirectMessages"`` \| ``"DirectMessageReactions"`` \| ``"DirectMessageTyping"`` \| ``"MessageContent"`` \| ``"GuildScheduledEvents"``, `number`\> | Bot intents |
+| `intents?` | `BitFieldResolvable`<``"Guilds"`` \| ``"GuildMembers"`` \| ``"GuildBans"`` \| ``"GuildEmojisAndStickers"`` \| ``"GuildIntegrations"`` \| ``"GuildWebhooks"`` \| ``"GuildInvites"`` \| ``"GuildVoiceStates"`` \| ``"GuildPresences"`` \| ``"GuildMessages"`` \| ``"GuildMessageReactions"`` \| ``"GuildMessageTyping"`` \| ``"DirectMessages"`` \| ``"DirectMessageReactions"`` \| ``"DirectMessageTyping"`` \| ``"MessageContent"`` \| ``"GuildScheduledEvents"`` \| ``"AutoModerationConfiguration"`` \| ``"AutoModerationExecution"``, `number`\> | Bot intents |
 
 #### Returns
 
@@ -58,7 +58,7 @@ A discord bot client instance with specified intents or default ones if none wer
 
 #### Defined in
 
-[utils/init_utils.ts:65](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/init_utils.ts#L65)
+[utils/init_utils.ts:65](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/init_utils.ts#L65)
 
 ___
 
@@ -83,7 +83,7 @@ Variable contents of fallback value
 
 #### Defined in
 
-[utils/init_utils.ts:38](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/init_utils.ts#L38)
+[utils/init_utils.ts:38](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/init_utils.ts#L38)
 
 ___
 
@@ -107,4 +107,4 @@ Test if an environment variable is set
 
 #### Defined in
 
-[utils/init_utils.ts:14](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/init_utils.ts#L14)
+[utils/init_utils.ts:14](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/init_utils.ts#L14)
