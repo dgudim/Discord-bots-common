@@ -1,4 +1,4 @@
-[discord_bots_common](../README.md) / [Exports](../modules.md) / colors
+[discord_bots_common](../README.md) / [Modules](../modules.md) / colors
 
 # Namespace: colors
 
@@ -35,7 +35,7 @@ parsed string
 
 #### Defined in
 
-utils/colors.ts:68
+[utils/colors.ts:68](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L68)
 
 ___
 
@@ -60,4 +60,4 @@ wrapped message, pass through [parse](colors.md#parse) before printing
 
 #### Defined in
 
-utils/colors.ts:38
+[utils/colors.ts:38](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L38)

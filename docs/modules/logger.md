@@ -1,4 +1,4 @@
-[discord_bots_common](../README.md) / [Exports](../modules.md) / logger
+[discord_bots_common](../README.md) / [Modules](../modules.md) / logger
 
 # Namespace: logger
 
@@ -36,7 +36,7 @@ Log a debug message
 
 #### Defined in
 
-utils/logger.ts:35
+[utils/logger.ts:35](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/logger.ts#L35)
 
 ___
 
@@ -58,7 +58,7 @@ Log an error message
 
 #### Defined in
 
-utils/logger.ts:59
+[utils/logger.ts:59](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/logger.ts#L59)
 
 ___
 
@@ -80,7 +80,7 @@ Log an debug message
 
 #### Defined in
 
-utils/logger.ts:43
+[utils/logger.ts:43](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/logger.ts#L43)
 
 ___
 
@@ -103,7 +103,7 @@ Base log function, log with any color
 
 #### Defined in
 
-utils/logger.ts:15
+[utils/logger.ts:15](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/logger.ts#L15)
 
 ___
 
@@ -125,4 +125,4 @@ Log a warning message
 
 #### Defined in
 
-utils/logger.ts:51
+[utils/logger.ts:51](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/logger.ts#L51)
