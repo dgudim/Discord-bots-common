@@ -1,4 +1,4 @@
-[discord_bots_common](../README.md) / [Modules](../modules.md) / utils
+[discord_bots_common](../README.md) / [Exports](../modules.md) / utils
 
 # Namespace: utils
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[utils/utils.ts:14](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L14)
+[utils/utils.ts:14](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L14)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[utils/utils.ts:15](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L15)
+[utils/utils.ts:15](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L15)
 
 ## Variables
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[utils/utils.ts:12](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L12)
+[utils/utils.ts:12](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L12)
 
 ## Functions
 
@@ -103,7 +103,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:299](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L299)
+[utils/utils.ts:299](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L299)
 
 ___
 
@@ -129,7 +129,7 @@ Clamped value
 
 #### Defined in
 
-[utils/utils.ts:579](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L579)
+[utils/utils.ts:579](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L579)
 
 ___
 
@@ -153,7 +153,7 @@ Fetch status
 
 #### Defined in
 
-[utils/utils.ts:605](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L605)
+[utils/utils.ts:605](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L605)
 
 ___
 
@@ -178,7 +178,7 @@ Gets url and attachement from an interaction
 
 #### Defined in
 
-[utils/utils.ts:473](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L473)
+[utils/utils.ts:473](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L473)
 
 ___
 
@@ -203,7 +203,7 @@ The log with the base
 
 #### Defined in
 
-[utils/utils.ts:61](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L61)
+[utils/utils.ts:61](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L61)
 
 ___
 
@@ -219,7 +219,7 @@ Current date and time
 
 #### Defined in
 
-[utils/utils.ts:547](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L547)
+[utils/utils.ts:547](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L547)
 
 ___
 
@@ -243,7 +243,7 @@ Blake3 hash
 
 #### Defined in
 
-[utils/utils.ts:100](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L100)
+[utils/utils.ts:100](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L100)
 
 ___
 
@@ -267,7 +267,7 @@ The last part of the path or url
 
 #### Defined in
 
-[utils/utils.ts:40](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L40)
+[utils/utils.ts:40](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L40)
 
 ___
 
@@ -293,7 +293,7 @@ Constructed embed
 
 #### Defined in
 
-[utils/utils.ts:536](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L536)
+[utils/utils.ts:536](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L536)
 
 ___
 
@@ -317,7 +317,7 @@ Blake3 hash
 
 #### Defined in
 
-[utils/utils.ts:109](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L109)
+[utils/utils.ts:109](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L109)
 
 ___
 
@@ -342,7 +342,7 @@ The value if it exists
 
 #### Defined in
 
-[utils/utils.ts:119](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L119)
+[utils/utils.ts:119](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L119)
 
 ___
 
@@ -366,7 +366,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:313](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L313)
+[utils/utils.ts:313](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L313)
 
 ___
 
@@ -395,7 +395,7 @@ The RGB representation
 
 #### Defined in
 
-[utils/utils.ts:154](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L154)
+[utils/utils.ts:154](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L154)
 
 ___
 
@@ -419,7 +419,7 @@ True if the path leads to a directory
 
 #### Defined in
 
-[utils/utils.ts:22](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L22)
+[utils/utils.ts:22](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L22)
 
 ___
 
@@ -443,7 +443,7 @@ True if the path leads to a file
 
 #### Defined in
 
-[utils/utils.ts:31](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L31)
+[utils/utils.ts:31](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L31)
 
 ___
 
@@ -467,7 +467,7 @@ Whether a url type is any image
 
 #### Defined in
 
-[utils/utils.ts:626](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L626)
+[utils/utils.ts:626](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L626)
 
 ___
 
@@ -491,7 +491,7 @@ Whether a file ends with png or jpg
 
 #### Defined in
 
-[utils/utils.ts:617](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L617)
+[utils/utils.ts:617](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L617)
 
 ___
 
@@ -515,7 +515,7 @@ Whether a url type is png or jpg
 
 #### Defined in
 
-[utils/utils.ts:635](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L635)
+[utils/utils.ts:635](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L635)
 
 ___
 
@@ -539,7 +539,7 @@ Whether the input string is url
 
 #### Defined in
 
-[utils/utils.ts:83](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L83)
+[utils/utils.ts:83](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L83)
 
 ___
 
@@ -564,7 +564,7 @@ Limited string, adding ... if it's too long
 
 #### Defined in
 
-[utils/utils.ts:136](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L136)
+[utils/utils.ts:136](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L136)
 
 ___
 
@@ -588,7 +588,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:267](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L267)
+[utils/utils.ts:267](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L267)
 
 ___
 
@@ -611,7 +611,7 @@ Reply to a message
 
 #### Defined in
 
-[utils/utils.ts:386](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L386)
+[utils/utils.ts:386](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L386)
 
 ___
 
@@ -631,7 +631,7 @@ ___
 
 #### Defined in
 
-[utils/utils.ts:280](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L280)
+[utils/utils.ts:280](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L280)
 
 ___
 
@@ -655,7 +655,7 @@ Lowercased and trimmed string
 
 #### Defined in
 
-[utils/utils.ts:51](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L51)
+[utils/utils.ts:51](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L51)
 
 ___
 
@@ -679,7 +679,7 @@ Array with every value normalized
 
 #### Defined in
 
-[utils/utils.ts:70](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L70)
+[utils/utils.ts:70](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L70)
 
 ___
 
@@ -703,7 +703,7 @@ Hex representation
 
 #### Defined in
 
-[utils/utils.ts:180](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L180)
+[utils/utils.ts:180](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L180)
 
 ___
 
@@ -727,7 +727,7 @@ Safely reply to an interaction (if already replied send to channel, if deferred 
 
 #### Defined in
 
-[utils/utils.ts:397](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L397)
+[utils/utils.ts:397](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L397)
 
 ___
 
@@ -751,7 +751,7 @@ Time in days, hours, minutes and seconds
 
 #### Defined in
 
-[utils/utils.ts:559](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L559)
+[utils/utils.ts:559](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L559)
 
 ___
 
@@ -775,7 +775,7 @@ Send a message to a text channel
 
 #### Defined in
 
-[utils/utils.ts:338](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L338)
+[utils/utils.ts:338](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L338)
 
 ___
 
@@ -808,7 +808,7 @@ True if the key was created
 
 #### Defined in
 
-[utils/utils.ts:646](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L646)
+[utils/utils.ts:646](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L646)
 
 ___
 
@@ -830,7 +830,7 @@ Wait for some time
 
 #### Defined in
 
-[utils/utils.ts:587](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L587)
+[utils/utils.ts:587](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L587)
 
 ___
 
@@ -854,7 +854,7 @@ url without http/https scheme
 
 #### Defined in
 
-[utils/utils.ts:596](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L596)
+[utils/utils.ts:596](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L596)
 
 ___
 
@@ -878,7 +878,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:328](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L328)
+[utils/utils.ts:328](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L328)
 
 ___
 
@@ -902,4 +902,4 @@ List of images in a directory
 
 #### Defined in
 
-[utils/utils.ts:512](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/utils.ts#L512)
+[utils/utils.ts:512](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L512)

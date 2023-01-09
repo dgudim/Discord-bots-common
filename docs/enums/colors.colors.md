@@ -1,4 +1,4 @@
-[discord_bots_common](../README.md) / [Modules](../modules.md) / [colors](../modules/colors.md) / colors
+[discord_bots_common](../README.md) / [Exports](../modules.md) / [colors](../modules/colors.md) / colors
 
 # Enumeration: colors
 
@@ -35,7 +35,7 @@ enum mapping to console colors
 
 #### Defined in
 
-[utils/colors.ts:13](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L13)
+[utils/colors.ts:13](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L13)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:16](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L16)
+[utils/colors.ts:16](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L16)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:8](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L8)
+[utils/colors.ts:8](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L8)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:11](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L11)
+[utils/colors.ts:11](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L11)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:25](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L25)
+[utils/colors.ts:25](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L25)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:15](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L15)
+[utils/colors.ts:15](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L15)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:14](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L14)
+[utils/colors.ts:14](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L14)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:24](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L24)
+[utils/colors.ts:24](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L24)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:27](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L27)
+[utils/colors.ts:27](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L27)
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:18](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L18)
+[utils/colors.ts:18](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L18)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:21](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L21)
+[utils/colors.ts:21](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L21)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:7](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L7)
+[utils/colors.ts:7](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L7)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:28](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L28)
+[utils/colors.ts:28](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L28)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:19](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L19)
+[utils/colors.ts:19](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L19)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:10](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L10)
+[utils/colors.ts:10](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L10)
 
 ___
 
@@ -185,4 +185,4 @@ ___
 
 #### Defined in
 
-[utils/colors.ts:22](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/colors.ts#L22)
+[utils/colors.ts:22](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/colors.ts#L22)
