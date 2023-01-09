@@ -24,6 +24,7 @@
 - [getFileHash](utils.md#getfilehash)
 - [getFileName](utils.md#getfilename)
 - [getSimpleEmbed](utils.md#getsimpleembed)
+- [getStringHash](utils.md#getstringhash)
 - [getValueIfExists](utils.md#getvalueifexists)
 - [guildToString](utils.md#guildtostring)
 - [hsvToRgb](utils.md#hsvtorgb)
@@ -36,6 +37,7 @@
 - [limitLength](utils.md#limitlength)
 - [messageContentToString](utils.md#messagecontenttostring)
 - [messageReply](utils.md#messagereply)
+- [messageToString](utils.md#messagetostring)
 - [normalize](utils.md#normalize)
 - [normalizeStringArray](utils.md#normalizestringarray)
 - [perc2color](utils.md#perc2color)
@@ -56,7 +58,7 @@
 
 #### Defined in
 
-[utils/utils.ts:14](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L14)
+utils/utils.ts:14
 
 ___
 
@@ -66,7 +68,7 @@ ___
 
 #### Defined in
 
-[utils/utils.ts:15](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L15)
+utils/utils.ts:15
 
 ## Variables
 
@@ -76,7 +78,7 @@ ___
 
 #### Defined in
 
-[utils/utils.ts:12](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L12)
+utils/utils.ts:12
 
 ## Functions
 
@@ -101,7 +103,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:273](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L273)
+utils/utils.ts:299
 
 ___
 
@@ -127,7 +129,7 @@ Clamped value
 
 #### Defined in
 
-[utils/utils.ts:553](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L553)
+utils/utils.ts:579
 
 ___
 
@@ -151,7 +153,7 @@ Fetch status
 
 #### Defined in
 
-[utils/utils.ts:579](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L579)
+utils/utils.ts:605
 
 ___
 
@@ -176,7 +178,7 @@ Gets url and attachement from an interaction
 
 #### Defined in
 
-[utils/utils.ts:447](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L447)
+utils/utils.ts:473
 
 ___
 
@@ -201,7 +203,7 @@ The log with the base
 
 #### Defined in
 
-[utils/utils.ts:61](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L61)
+utils/utils.ts:61
 
 ___
 
@@ -217,7 +219,7 @@ Current date and time
 
 #### Defined in
 
-[utils/utils.ts:521](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L521)
+utils/utils.ts:547
 
 ___
 
@@ -241,7 +243,7 @@ Blake3 hash
 
 #### Defined in
 
-[utils/utils.ts:100](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L100)
+utils/utils.ts:100
 
 ___
 
@@ -265,7 +267,7 @@ The last part of the path or url
 
 #### Defined in
 
-[utils/utils.ts:40](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L40)
+utils/utils.ts:40
 
 ___
 
@@ -291,7 +293,31 @@ Constructed embed
 
 #### Defined in
 
-[utils/utils.ts:510](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L510)
+utils/utils.ts:536
+
+___
+
+### getStringHash
+
+▸ **getStringHash**(`str`): `Promise`<`string`\>
+
+Get string blake3 hash
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `str` | `string` | Input String |
+
+#### Returns
+
+`Promise`<`string`\>
+
+Blake3 hash
+
+#### Defined in
+
+utils/utils.ts:109
 
 ___
 
@@ -316,7 +342,7 @@ The value if it exists
 
 #### Defined in
 
-[utils/utils.ts:110](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L110)
+utils/utils.ts:119
 
 ___
 
@@ -340,7 +366,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:287](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L287)
+utils/utils.ts:313
 
 ___
 
@@ -369,7 +395,7 @@ The RGB representation
 
 #### Defined in
 
-[utils/utils.ts:145](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L145)
+utils/utils.ts:154
 
 ___
 
@@ -393,7 +419,7 @@ True if the path leads to a directory
 
 #### Defined in
 
-[utils/utils.ts:22](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L22)
+utils/utils.ts:22
 
 ___
 
@@ -417,7 +443,7 @@ True if the path leads to a file
 
 #### Defined in
 
-[utils/utils.ts:31](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L31)
+utils/utils.ts:31
 
 ___
 
@@ -437,9 +463,11 @@ Determine whether url type is image
 
 `boolean`
 
+Whether a url type is any image
+
 #### Defined in
 
-[utils/utils.ts:600](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L600)
+utils/utils.ts:626
 
 ___
 
@@ -447,7 +475,7 @@ ___
 
 ▸ **isPngOrJpg**(`name`): `boolean`
 
-Determine whether a file ai png or jpg
+Determine whether a file ends with png or jpg
 
 #### Parameters
 
@@ -459,9 +487,11 @@ Determine whether a file ai png or jpg
 
 `boolean`
 
+Whether a file ends with png or jpg
+
 #### Defined in
 
-[utils/utils.ts:591](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L591)
+utils/utils.ts:617
 
 ___
 
@@ -481,9 +511,11 @@ Determine whether url type is png or jpg
 
 `boolean`
 
+Whether a url type is png or jpg
+
 #### Defined in
 
-[utils/utils.ts:609](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L609)
+utils/utils.ts:635
 
 ___
 
@@ -507,7 +539,7 @@ Whether the input string is url
 
 #### Defined in
 
-[utils/utils.ts:83](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L83)
+utils/utils.ts:83
 
 ___
 
@@ -532,7 +564,7 @@ Limited string, adding ... if it's too long
 
 #### Defined in
 
-[utils/utils.ts:127](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L127)
+utils/utils.ts:136
 
 ___
 
@@ -556,7 +588,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:254](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L254)
+utils/utils.ts:267
 
 ___
 
@@ -579,7 +611,27 @@ Reply to a message
 
 #### Defined in
 
-[utils/utils.ts:360](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L360)
+utils/utils.ts:386
+
+___
+
+### messageToString
+
+▸ **messageToString**(`message`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message` | `Message`<`boolean`\> |
+
+#### Returns
+
+`string`
+
+#### Defined in
+
+utils/utils.ts:280
 
 ___
 
@@ -603,7 +655,7 @@ Lowercased and trimmed string
 
 #### Defined in
 
-[utils/utils.ts:51](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L51)
+utils/utils.ts:51
 
 ___
 
@@ -627,7 +679,7 @@ Array with every value normalized
 
 #### Defined in
 
-[utils/utils.ts:70](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L70)
+utils/utils.ts:70
 
 ___
 
@@ -651,7 +703,7 @@ Hex representation
 
 #### Defined in
 
-[utils/utils.ts:171](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L171)
+utils/utils.ts:180
 
 ___
 
@@ -675,7 +727,7 @@ Safely reply to an interaction (if already replied send to channel, if deferred 
 
 #### Defined in
 
-[utils/utils.ts:371](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L371)
+utils/utils.ts:397
 
 ___
 
@@ -699,7 +751,7 @@ Time in days, hours, minutes and seconds
 
 #### Defined in
 
-[utils/utils.ts:533](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L533)
+utils/utils.ts:559
 
 ___
 
@@ -723,13 +775,13 @@ Send a message to a text channel
 
 #### Defined in
 
-[utils/utils.ts:312](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L312)
+utils/utils.ts:338
 
 ___
 
 ### setOrAppendToMap
 
-▸ **setOrAppendToMap**<`K`, `V`\>(`map`, `key`, `value`): `void`
+▸ **setOrAppendToMap**<`K`, `V`\>(`map`, `key`, `value`): `boolean`
 
 Add a new element with a specified key and value to the Map, or overwrite if exists
 
@@ -750,11 +802,13 @@ Add a new element with a specified key and value to the Map, or overwrite if exi
 
 #### Returns
 
-`void`
+`boolean`
+
+True if the key was created
 
 #### Defined in
 
-[utils/utils.ts:619](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L619)
+utils/utils.ts:646
 
 ___
 
@@ -776,7 +830,7 @@ Wait for some time
 
 #### Defined in
 
-[utils/utils.ts:561](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L561)
+utils/utils.ts:587
 
 ___
 
@@ -800,7 +854,7 @@ url without http/https scheme
 
 #### Defined in
 
-[utils/utils.ts:570](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L570)
+utils/utils.ts:596
 
 ___
 
@@ -824,7 +878,7 @@ String representation
 
 #### Defined in
 
-[utils/utils.ts:302](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L302)
+utils/utils.ts:328
 
 ___
 
@@ -848,4 +902,4 @@ List of images in a directory
 
 #### Defined in
 
-[utils/utils.ts:486](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/utils.ts#L486)
+utils/utils.ts:512
