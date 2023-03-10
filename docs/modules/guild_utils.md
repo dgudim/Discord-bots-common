@@ -39,7 +39,7 @@ Created or retrieved channel
 
 #### Defined in
 
-[utils/guild_utils.ts:87](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L87)
+[utils/guild_utils.ts:87](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L87)
 
 ___
 
@@ -65,7 +65,7 @@ Created or retrieved role
 
 #### Defined in
 
-[utils/guild_utils.ts:45](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L45)
+[utils/guild_utils.ts:45](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L45)
 
 ___
 
@@ -88,7 +88,7 @@ Delete channel or a channel category in a guild if it exists
 
 #### Defined in
 
-[utils/guild_utils.ts:107](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L107)
+[utils/guild_utils.ts:107](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L107)
 
 ___
 
@@ -111,7 +111,7 @@ Delete a role in a guild if it exists
 
 #### Defined in
 
-[utils/guild_utils.ts:67](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L67)
+[utils/guild_utils.ts:67](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L67)
 
 ___
 
@@ -135,7 +135,7 @@ All guild
 
 #### Defined in
 
-[utils/guild_utils.ts:27](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L27)
+[utils/guild_utils.ts:27](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L27)
 
 ___
 
@@ -159,7 +159,7 @@ All members
 
 #### Defined in
 
-[utils/guild_utils.ts:11](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L11)
+[utils/guild_utils.ts:11](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L11)
 
 ___
 
@@ -183,7 +183,7 @@ Update user's roles, e.g. rank roles or clan roles
 
 #### Defined in
 
-[utils/guild_utils.ts:142](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L142)
+[utils/guild_utils.ts:142](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L142)
 
 ___
 
@@ -208,4 +208,4 @@ Guild member if found
 
 #### Defined in
 
-[utils/guild_utils.ts:127](https://github.com/dgudim/Discord-bots-common/blob/master/src/utils/guild_utils.ts#L127)
+[utils/guild_utils.ts:127](https://github.com/dgudim/Discord_bots-common/blob/master/src/utils/guild_utils.ts#L127)
